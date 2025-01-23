@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="padding_extra_small">4dp</dimen>
+    <dimen name="padding_small">8dp</dimen>
+    <dimen name="padding_medium">16dp</dimen>
+    <dimen name="padding_large">32dp</dimen>
+    <dimen name="padding_extra_large">64dp</dimen>
+    <dimen name="setting_row_height">64dp</dimen>
+    <dimen name="button_height">48dp</dimen>
+    <dimen name="inset_corner_radius">8dp</dimen>
+    <dimen name="empty_state_icon_size">192dp</dimen>
+    <dimen name="book_cover_width">122dp</dimen>
+    <dimen name="scan_cover_height">256dp</dimen>
+    <dimen name="scan_row_height">200dp</dimen>
+    <dimen name="scan_stack_height">250dp</dimen>
+    <dimen name="secondary_input_corner_radius">22dp</dimen>
+</resources>
