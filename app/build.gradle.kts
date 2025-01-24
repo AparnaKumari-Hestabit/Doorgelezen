@@ -80,8 +80,6 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
 
-    implementation(libs.androidx.navigation.compose)
-
     implementation(libs.androidx.room.ktx)
 
     implementation(libs.kotlinx.datetime)
