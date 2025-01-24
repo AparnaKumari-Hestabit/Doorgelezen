@@ -1,4 +1,4 @@
-package com.screen.doorgelezen.screens
+package com.screen.doorgelezen.screens.scanner
 
 
 import androidx.compose.foundation.layout.Column
@@ -18,30 +18,32 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 
 
 @Composable
 fun ScanConditionPicker(
 ) {
-    val largePadding = dimensionResource(com.screen.doorgelezen.R.dimen.padding_large)
     val smallPadding = dimensionResource(com.screen.doorgelezen.R.dimen.padding_small)
     val extra_smallPadding = dimensionResource(com.screen.doorgelezen.R.dimen.padding_extra_small)
 
 
-    Column(Modifier.fillMaxWidth()) {
+    Column(Modifier.fillMaxWidth().padding(10.dp)) {
         Text(
             stringResource(com.screen.doorgelezen.R.string.cheapest_bol_offers),
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier.padding(bottom = smallPadding)
         )
-            Text(
-                stringResource(com.screen.doorgelezen.R.string.no_bol_offers),
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = largePadding)
-            )
+        //TODO
+//            Text(
+//                stringResource(com.screen.doorgelezen.R.string.no_bol_offers),
+//                textAlign = TextAlign.Center,
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(vertical = largePadding)
+//            )
                     Column {
 
                         Row(
@@ -73,4 +75,10 @@ fun ScanConditionPicker(
             color = MaterialTheme.colorScheme.onBackground
         )
     }
+}
+
+@Preview(showSystemUi = true, showBackground = true)
+@Composable
+fun Scan(){
+    ScanContent()
 }
