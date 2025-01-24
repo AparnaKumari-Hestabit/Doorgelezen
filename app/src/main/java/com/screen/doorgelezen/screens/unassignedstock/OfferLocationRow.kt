@@ -23,24 +23,23 @@ import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.screen.doorgelezen.data.models.OfferLocation
 import com.screen.doorgelezen.ui.theme.offWhite
 
 @Composable
 fun OfferLocationRow(
-    offerLocation: OfferLocation,
+//    offerLocation: OfferLocation,
     modifier: Modifier = Modifier,
-    additionalMetadata: String? = pluralStringResource(
-        com.screen.doorgelezen.R.plurals.books_at_location_format,
-        offerLocation.volume,
-        offerLocation.volume
-    ),
+//    additionalMetadata: String? = pluralStringResource(
+//        com.screen.doorgelezen.R.plurals.books_at_location_format,
+//        offerLocation.volume,
+//        offerLocation.volume
+//    ),
     content: @Composable() () -> Unit = {}
 ) {
     val paddingMedium = dimensionResource(com.screen.doorgelezen.R.dimen.padding_medium)
     val paddingSmall = dimensionResource(com.screen.doorgelezen.R.dimen.padding_small)
     val cornerRadius = 6
-    val offer = offerLocation.offer
+//    val offer = offerLocation.offer
     val metadataColor = Color.DarkGray
     Surface(
         modifier = modifier,
@@ -54,7 +53,7 @@ fun OfferLocationRow(
         ) {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(offer.imageUrl)
+//                    .data(offer.imageUrl)
                     .crossfade(true)
                     .build(),
                 contentDescription = stringResource(id = com.screen.doorgelezen.R.string.cover_image),
@@ -79,28 +78,28 @@ fun OfferLocationRow(
                     bottom = paddingMedium
                 )
             ) {
-                Text(
-                    text = offer.title,
-                    style = MaterialTheme.typography.titleLarge
-                )
+//                Text(
+//                    text = offer.title,
+//                    style = MaterialTheme.typography.titleLarge
+//                )
                 Row(
                     modifier = Modifier
                         .padding(top = paddingSmall),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
-                        text = offer.ean,
-                        style = MaterialTheme.typography.labelSmall,
-                        color = metadataColor
-                    )
-                    if (!additionalMetadata.isNullOrBlank()) {
-                        Text(text = " - ", color = metadataColor)
-                    }
-                    Text(
-                        text = additionalMetadata ?: "",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = metadataColor
-                    )
+//                    Text(
+//                        text = offer.ean,
+//                        style = MaterialTheme.typography.labelSmall,
+//                        color = metadataColor
+//                    )
+//                    if (!additionalMetadata.isNullOrBlank()) {
+//                        Text(text = " - ", color = metadataColor)
+//                    }
+//                    Text(
+//                        text = additionalMetadata ?: "",
+//                        style = MaterialTheme.typography.labelSmall,
+//                        color = metadataColor
+//                    )
                 }
                 Row(
                     modifier = Modifier
@@ -108,7 +107,7 @@ fun OfferLocationRow(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Tag(stringResource(offer.condition.stringResourceId))
+//                    Tag(stringResource(offer.condition.stringResourceId))
                     content()
                 }
             }

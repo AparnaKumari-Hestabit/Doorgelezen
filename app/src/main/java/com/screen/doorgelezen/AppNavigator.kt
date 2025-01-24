@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.screen.doorgelezen.screens.AuthenticationScreen
+import com.screen.doorgelezen.screens.Authentication.AuthenticationScreen
 import com.screen.doorgelezen.screens.Splash
 import com.screen.doorgelezen.AppScreens.*
 
@@ -24,6 +24,7 @@ fun AppNavigator() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
+
             NavHost(
                 navController = navController,
                 startDestination = SPLASH.route,
@@ -35,7 +36,6 @@ fun AppNavigator() {
                     }
                 }
                 composable(AUTHENTICATION.route) { AuthenticationScreen() }
-
             }
         }
     }

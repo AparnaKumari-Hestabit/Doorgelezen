@@ -1,11 +1,12 @@
-package com.screen.doorgelezen.screens
+package com.screen.doorgelezen.screens.Authentication
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -14,10 +15,10 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,53 +30,57 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.screen.doorgelezen.R
+import com.screen.doorgelezen.data.models.AuthModel
+import com.screen.doorgelezen.utils.isValidEmail
+import com.screen.doorgelezen.utils.printDebug
+import com.screen.doorgelezen.viewModels.AuthViewModel
 
 @Composable
 fun AuthenticationScreen() {
 
     val extraLargePadding = dimensionResource(R.dimen.padding_extra_large)
     val cornerRadius = 2
-    val coroutineScope = rememberCoroutineScope()
     var loading: Boolean by remember { mutableStateOf(false) }
 
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.primary
+
+    BackHandler {
+        //TODO : Do nothing on back
+    }
+
+    Column(
+        modifier = Modifier.background(color = MaterialTheme.colorScheme.primary),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = if (loading) Arrangement.Center else Arrangement.Bottom
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = if (loading) Arrangement.Center else Arrangement.Bottom
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .weight(1f, false)
+                .fillMaxWidth()
+                .padding(extraLargePadding)
         ) {
-            Box(
-                contentAlignment = Alignment.Center,
+            Image(
+                painter = painterResource(id = R.drawable.bibliophile),
+                contentDescription = stringResource(R.string.woman_reading_book)
+            )
+        }
+        if (loading) CircularProgressIndicator(modifier = Modifier, color = Color.White)
+        AnimatedVisibility(visible = !loading) {
+            Surface(
                 modifier = Modifier
-                    .weight(1f, false)
                     .fillMaxWidth()
-                    .padding(extraLargePadding)
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.bibliophile),
-                    contentDescription = stringResource(R.string.woman_reading_book)
+                    .weight(1f, false),
+                shape = RoundedCornerShape(
+                    topStartPercent = cornerRadius,
+                    topEndPercent = cornerRadius
                 )
-            }
-            if (loading) CircularProgressIndicator(modifier = Modifier, color = Color.White)
-            AnimatedVisibility(visible = !loading) {
-                Surface(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f, false),
-                    shape = RoundedCornerShape(
-                        topStartPercent = cornerRadius,
-                        topEndPercent = cornerRadius
-                    )
-                ) {
-                    LogInForm()
-                }
+            ) {
+                LogInForm()
             }
         }
     }
-
 }
 
 @Composable
@@ -87,8 +92,21 @@ fun LogInForm(
     val paddingExtraSmall = dimensionResource(R.dimen.padding_extra_small)
     val buttonHeight = dimensionResource(R.dimen.button_height)
 
+    val viewModel: AuthViewModel = hiltViewModel()
+    val loginFlow = viewModel.loginFlow.collectAsState()
+    printDebug(loginFlow.value.toString())
+
+    var email by remember {
+        mutableStateOf("")
+    }
+
+    var password by remember {
+        mutableStateOf("")
+    }
+
     val focusManager = LocalFocusManager.current
     val submitWrapper = {
+        viewModel.login(AuthModel(email, password))
         focusManager.clearFocus()
     }
 
@@ -98,9 +116,8 @@ fun LogInForm(
         modifier = Modifier.padding(extraLargePadding),
     ) {
         OutlinedTextField(
-            value = "",
-            onValueChange = {
-            },
+            value = email,
+            onValueChange = { email = it },
             singleLine = true,
             label = { Text(stringResource(R.string.email_address)) },
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
@@ -115,10 +132,9 @@ fun LogInForm(
                 .fillMaxWidth()
         )
         OutlinedTextField(
-            value = " ",
+            value = password,
             visualTransformation = PasswordVisualTransformation(),
-            onValueChange = {
-            },
+            onValueChange = { password = it },
             singleLine = true,
             label = { Text(stringResource(R.string.password)) },
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
@@ -138,7 +154,7 @@ fun LogInForm(
                 .fillMaxWidth()
                 .height(buttonHeight),
             onClick = submitWrapper,
-            enabled = false
+            enabled = email.isNotEmpty() && password.isNotEmpty() && isValidEmail(email)
         ) {
             Text(stringResource(R.string.log_in))
         }

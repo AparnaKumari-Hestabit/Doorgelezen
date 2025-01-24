@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.Doorgelezen" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.Doorgelezen" parent="android:Theme.Material.Light.NoActionBar" >
+
+        <item name="android:statusBarColor">@color/darkGreen</item>
+        <item name="android:windowLightStatusBar">true</item> <!-- For light icons on dark status bar -->
+
+    </style>
+
 </resources>
