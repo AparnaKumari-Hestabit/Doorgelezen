@@ -15,11 +15,4 @@ data class ThirdPartyOffer(
     @Expose
     @SerializedName("retailer_id")
     val retailerId: Int
-) : Comparable<ThirdPartyOffer> {
-    override fun compareTo(other: ThirdPartyOffer): Int {
-        val conditionOrder = condition.compareTo(other.condition)
-        if (conditionOrder != 0) return conditionOrder
-
-        return other.price.compareTo(price)
-    }
-}
+)

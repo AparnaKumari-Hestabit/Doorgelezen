@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Doorgelezen</string>
-    <string name="scan_intent_action" translatable="false">nl.doorgelezen.SCAN</string>
+    <string name="scan_intent_action" translatable="false">com.screen.doorgelezen.SCAN</string>
     <string name="datawedge_intent_key_data" translatable="false">com.symbol.datawedge.data_string</string>
     <string name="invalid_credentials_error">Invalid email address and/or password.</string>
     <string name="invalid_email_address">Invalid email address.</string>

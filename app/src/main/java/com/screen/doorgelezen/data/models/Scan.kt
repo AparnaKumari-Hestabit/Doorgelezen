@@ -4,7 +4,7 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import okhttp3.HttpUrl
 import java.math.BigDecimal
-import java.util.*
+import java.util.UUID
 
 data class Scan(
     val title: String,
@@ -23,7 +23,7 @@ data class Scan(
     }
 
     override fun hashCode(): Int {
-        return title.hashCode() * ean.hashCode() * purchasePrice.hashCode() * condition.hashCode() * (imageUrl?.hashCode()
+        return title.hashCode() * ean.hashCode()  * condition.hashCode() * (imageUrl?.hashCode()
             ?: 1) * id.hashCode()
     }
 }
