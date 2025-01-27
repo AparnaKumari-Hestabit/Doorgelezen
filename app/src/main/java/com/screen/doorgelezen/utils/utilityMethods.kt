@@ -1,6 +1,7 @@
 package com.screen.doorgelezen.utils
 
 import android.util.Log
+import com.screen.doorgelezen.data.CookieJar
 
 fun printDebug(value:String){
     Log.d("DEBUG", "printDebug: $value")

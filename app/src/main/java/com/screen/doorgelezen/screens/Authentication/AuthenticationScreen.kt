@@ -7,6 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -30,62 +31,24 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.screen.doorgelezen.AppScreens
 import com.screen.doorgelezen.R
 import com.screen.doorgelezen.data.models.AuthModel
+import com.screen.doorgelezen.data.repository.Resource
 import com.screen.doorgelezen.utils.isValidEmail
-import com.screen.doorgelezen.utils.printDebug
 import com.screen.doorgelezen.viewModels.AuthViewModel
 
 @Composable
-fun AuthenticationScreen() {
+fun AuthenticationScreen(showErrorSnackbar: () -> Unit, onNavigate: (AppScreens) -> Unit) {
 
-    val extraLargePadding = dimensionResource(R.dimen.padding_extra_large)
     val cornerRadius = 2
-    var loading: Boolean by remember { mutableStateOf(false) }
-
 
     BackHandler {
         //TODO : Do nothing on back
     }
 
-    Column(
-        modifier = Modifier.background(color = MaterialTheme.colorScheme.primary),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = if (loading) Arrangement.Center else Arrangement.Bottom
-    ) {
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .weight(1f, false)
-                .fillMaxWidth()
-                .padding(extraLargePadding)
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.bibliophile),
-                contentDescription = stringResource(R.string.woman_reading_book)
-            )
-        }
-        if (loading) CircularProgressIndicator(modifier = Modifier, color = Color.White)
-        AnimatedVisibility(visible = !loading) {
-            Surface(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f, false),
-                shape = RoundedCornerShape(
-                    topStartPercent = cornerRadius,
-                    topEndPercent = cornerRadius
-                )
-            ) {
-                LogInForm()
-            }
-        }
-    }
-}
-
-@Composable
-fun LogInForm(
-) {
     val extraLargePadding = dimensionResource(R.dimen.padding_extra_large)
     val paddingMedium = dimensionResource(R.dimen.padding_medium)
     val paddingSmall = dimensionResource(R.dimen.padding_small)
@@ -94,7 +57,11 @@ fun LogInForm(
 
     val viewModel: AuthViewModel = hiltViewModel()
     val loginFlow = viewModel.loginFlow.collectAsState()
-    printDebug(loginFlow.value.toString())
+    if(loginFlow.value == Resource.Success(Unit)){
+        onNavigate(AppScreens.HOME)
+    }
+
+    val loading by viewModel.isLoading.collectAsState()
 
     var email by remember {
         mutableStateOf("")
@@ -106,57 +73,87 @@ fun LogInForm(
 
     val focusManager = LocalFocusManager.current
     val submitWrapper = {
-        viewModel.login(AuthModel(email, password))
+        viewModel.login(AuthModel(email, password), showErrorSnackbar)
         focusManager.clearFocus()
     }
 
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(paddingExtraSmall),
-        modifier = Modifier.padding(extraLargePadding),
-    ) {
-        OutlinedTextField(
-            value = email,
-            onValueChange = { email = it },
-            singleLine = true,
-            label = { Text(stringResource(R.string.email_address)) },
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-            keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) })
-        )
-        Text(
-            text = "",
-            color = MaterialTheme.colorScheme.error,
-            style = MaterialTheme.typography.bodySmall,
-            modifier = Modifier
-                .padding(start = paddingMedium)
-                .fillMaxWidth()
-        )
-        OutlinedTextField(
-            value = password,
-            visualTransformation = PasswordVisualTransformation(),
-            onValueChange = { password = it },
-            singleLine = true,
-            label = { Text(stringResource(R.string.password)) },
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-            keyboardActions = KeyboardActions(onDone = { submitWrapper() })
-        )
-        Text(
-            text = "",
-            color = MaterialTheme.colorScheme.error,
-            style = MaterialTheme.typography.bodySmall,
-            modifier = Modifier
-                .padding(start = paddingMedium)
-                .fillMaxWidth()
-        )
-        Button(
-            modifier = Modifier
-                .padding(paddingSmall)
-                .fillMaxWidth()
-                .height(buttonHeight),
-            onClick = submitWrapper,
-            enabled = email.isNotEmpty() && password.isNotEmpty() && isValidEmail(email)
+    Box {
+
+        if (loading) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .zIndex(2f)
+                    .background(color = Color.Black.copy(0.5f)),
+                contentAlignment = Alignment.Center,
+            ) {
+                CircularProgressIndicator(color = Color.White)
+            }
+        }
+
+        Column(
+            modifier = Modifier.background(color = MaterialTheme.colorScheme.primary),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = if (loading) Arrangement.Center else Arrangement.Bottom
         ) {
-            Text(stringResource(R.string.log_in))
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .weight(1f, false)
+                    .fillMaxWidth()
+                    .padding(extraLargePadding)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.bibliophile),
+                    contentDescription = stringResource(R.string.woman_reading_book)
+                )
+            }
+
+
+            Surface(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f, false),
+                shape = RoundedCornerShape(
+                    topStartPercent = cornerRadius,
+                    topEndPercent = cornerRadius
+                )
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(paddingMedium),
+                    modifier = Modifier.padding(extraLargePadding),
+                ) {
+                    OutlinedTextField(
+                        value = email,
+                        onValueChange = { email = it },
+                        singleLine = true,
+                        label = { Text(stringResource(R.string.email_address)) },
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                        keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) })
+                    )
+                    OutlinedTextField(
+                        value = password,
+                        visualTransformation = PasswordVisualTransformation(),
+                        onValueChange = { password = it },
+                        singleLine = true,
+                        label = { Text(stringResource(R.string.password)) },
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                        keyboardActions = KeyboardActions(onDone = { submitWrapper() })
+                    )
+                    Button(
+                        modifier = Modifier
+                            .padding(paddingSmall)
+                            .fillMaxWidth()
+                            .height(buttonHeight),
+                        onClick = submitWrapper,
+                        enabled = email.isNotEmpty() && password.isNotEmpty() && isValidEmail(email)
+                    ) {
+                        Text(stringResource(R.string.log_in))
+                    }
+                }
+            }
+
         }
     }
 }

@@ -1,68 +1,37 @@
 package com.screen.doorgelezen.screens.unassignedstock
 
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.screen.doorgelezen.R
-import java.math.BigDecimal
-import java.util.UUID
+import com.screen.doorgelezen.data.repository.Resource
+import com.screen.doorgelezen.viewModels.UnassignedStockViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UnassignedStockScreen(
+fun UnassignedStockScreen() {
 
-) {
-//    val smallPadding = dimensionResource(R.dimen.padding_small)
-//
-//    val stock = listOf(
-//        OfferLocation(
-//            offerId = UUID.randomUUID(),
-//            locationId = Location.DEFAULT_ID,
-//            volume = 6,
-//            offer = Offer(
-//                UUID.randomUUID(),
-//                fulfilmentMethod = FulfilmentMethod.RETAILER,
-//                deliveryMethod = DeliveryMethod.BOL,
-//                condition = OfferCondition.NEW,
-//                BigDecimal(9.99),
-//                ean = "9781529034523",
-//                title = "The Hitchhiker's Guide to the Galaxy"
-//            )
-//        ),
-//        OfferLocation(
-//            offerId = UUID.randomUUID(),
-//            locationId = Location.DEFAULT_ID,
-//            volume = 3,
-//            offer = Offer(
-//                UUID.randomUUID(),
-//                fulfilmentMethod = FulfilmentMethod.BOL,
-//                deliveryMethod = DeliveryMethod.BOL,
-//                condition = OfferCondition.AS_NEW,
-//                BigDecimal(16.56),
-//                ean = "9781617293023",
-//                title = "Type-driven Development with Idris"
-//            )
-//        )
-//    )
-//
+    BackHandler {
+        //TODO: Handle back
+    }
+
+    val smallPadding = dimensionResource(R.dimen.padding_small)
+
+    val viewModel: UnassignedStockViewModel = hiltViewModel()
+    val stocks = viewModel.stocksFlow.collectAsState()
+
 //    Scaffold(
 //        topBar = {
 //            TopAppBar(
@@ -100,15 +69,36 @@ fun UnassignedStockScreen(
 //            }
 //        }
 //    ) { innerPadding ->
-//
-//        UnassignedStockList(
-//            stock = stock,
-//            onDecrement = { /* Handle decrement if needed */ },
-//            modifier = Modifier
-//                .padding(innerPadding)
-//                .padding(vertical = smallPadding)
-//                .fillMaxSize()
-//        )
-//    }
+
+    stocks.value.let {
+        when(it){
+            is Resource.Failure -> {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
+                    Text("Cannot able to fetch stock !")
+                }
+            }
+            Resource.Loading -> {
+                Box(modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(0.5f)), contentAlignment = Alignment.Center){
+                    CircularProgressIndicator(color = Color.White)
+                }
+            }
+            is Resource.Success -> {
+                UnassignedStockList(
+                    stock = it.result,
+                    onDecrement = { /* Handle decrement if needed */ },
+                    modifier = Modifier
+                        .padding()
+                        .padding(vertical = smallPadding)
+                        .fillMaxSize()
+                )
+            }
+            null -> {
+
+            }
+        }
+    }
+
 }
 

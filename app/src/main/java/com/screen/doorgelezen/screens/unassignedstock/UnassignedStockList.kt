@@ -9,27 +9,33 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.screen.doorgelezen.R
+import com.screen.doorgelezen.data.models.Location
+import com.screen.doorgelezen.data.models.Offer
+import com.screen.doorgelezen.data.models.OfferCondition
+import com.screen.doorgelezen.data.models.OfferLocation
+import doorgelezen.models.DeliveryMethod
+import doorgelezen.models.FulfilmentMethod
 import java.math.BigDecimal
 import java.util.UUID
 
 @SuppressLint("SuspiciousIndentation")
 @Composable
 fun UnassignedStockList(
-//    stock: List<OfferLocation>,
-//    onDecrement: (OfferLocation) -> Unit,
+    stock: List<OfferLocation>,
+    onDecrement: (OfferLocation) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val paddingMedium = dimensionResource(R.dimen.padding_medium)
 
-//        LazyColumn(modifier = modifier) {
-//            items(items = stock) { offerLocation ->
-//                UnassignedStockRow(
-//                    offerLocation = offerLocation,
-//                    onSelectedChange = { onDecrement(offerLocation) },
-//                    modifier = Modifier.padding(paddingMedium)
-//                )
-//            }
-//        }
+        LazyColumn(modifier = modifier) {
+            items(items = stock) { offerLocation ->
+                UnassignedStockRow(
+                    offerLocation = offerLocation,
+                    onSelectedChange = { onDecrement(offerLocation) },
+                    modifier = Modifier.padding(paddingMedium)
+                )
+            }
+        }
 
 }
 
@@ -38,37 +44,37 @@ fun UnassignedStockList(
 fun UnassignedStockListPreview() {
     val offerId = UUID.randomUUID()
     val altOfferId = UUID.randomUUID()
-//    UnassignedStockList(
-//        stock = listOf(
-//            OfferLocation(
-//                offerId,
-//                Location.DEFAULT_ID,
-//                6,
-//                Offer(
-//                    offerId,
-//                    FulfilmentMethod.RETAILER,
-//                    DeliveryMethod.BOL,
-//                    OfferCondition.NEW,
-//                    BigDecimal(9.99),
-//                    "9781529034523",
-//                    "The Hitchhiker's Guide to the Galaxy"
-//                )
-//            ),
-//            OfferLocation(
-//                altOfferId,
-//                Location.DEFAULT_ID,
-//                3,
-//                Offer(
-//                    altOfferId,
-//                    FulfilmentMethod.BOL,
-//                    DeliveryMethod.BOL,
-//                    OfferCondition.AS_NEW,
-//                    BigDecimal(16.56),
-//                    "9781617293023",
-//                    "Type-driven Development with Idris"
-//                )
-//            )
-//        ),
-//        {}
-//    )
+    UnassignedStockList(
+        stock = listOf(
+            OfferLocation(
+                offerId.toString(),
+                Location.DEFAULT_ID,
+                6,
+                Offer(
+                    offerId,
+                    FulfilmentMethod.RETAILER,
+                    DeliveryMethod.BOL,
+                    OfferCondition.NEW,
+                    BigDecimal(9.99),
+                    "9781529034523",
+                    "The Hitchhiker's Guide to the Galaxy"
+                )
+            ),
+            OfferLocation(
+                altOfferId.toString(),
+                Location.DEFAULT_ID,
+                3,
+                Offer(
+                    altOfferId,
+                    FulfilmentMethod.BOL,
+                    DeliveryMethod.BOL,
+                    OfferCondition.AS_NEW,
+                    BigDecimal(16.56),
+                    "9781617293023",
+                    "Type-driven Development with Idris"
+                )
+            )
+        ),
+        {}
+    )
 }
