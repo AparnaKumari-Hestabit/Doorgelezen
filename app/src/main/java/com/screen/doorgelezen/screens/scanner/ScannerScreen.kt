@@ -13,6 +13,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -20,30 +21,23 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.screen.doorgelezen.R
+import com.screen.doorgelezen.viewModels.CatalogViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ScannerScreen(){
+fun ScannerScreen(viewModel: CatalogViewModel = hiltViewModel()){
 
-//    TODO
-//  ScanDataReceiver(stringResource(R.string.scan_intent_action), viewModel::search)
+  ScanDataReceiver(stringResource(R.string.scan_intent_action), viewModel::search)
 
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(
+            TopAppBar(
                 title = { Text(stringResource(R.string.scanner)) },
                 actions = {
-                    IconButton(onClick = {
-//                        TODO
-//                        viewModel.search()
-                    }) {
-                        Icon(
-                            imageVector = Icons.Default.Search,
-                            contentDescription = stringResource(R.string.search)
-                        )
-                    }
+                    SearchBar(search = viewModel::search)
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     containerColor = Color.Transparent
@@ -59,8 +53,7 @@ fun ScannerScreen(){
 
                 Spacer(modifier = Modifier.height(16.dp))
 //               TODO
-                // search screen content
-//                ScanDetail(viewModel.scan)
+                SearchScanDetail(viewModel.scan)
             }
         }
     )
