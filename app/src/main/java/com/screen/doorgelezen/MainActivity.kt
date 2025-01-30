@@ -14,8 +14,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             DoorgelezenTheme {
-//                AppNavigator()
-                ScannerScreen()
+                AppNavigator()
             }
         }
     }

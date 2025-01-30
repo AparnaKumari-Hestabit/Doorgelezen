@@ -84,4 +84,9 @@
         <item quantity="one">%1$d book available</item>
         <item quantity="other">%1$d books available</item>
     </plurals>
+
+    <string name="BACK_ONLINE" translatable="false">Back online</string>
+    <string name="INTERNET_CONNECTION_LOST" translatable="false">Connection lost</string>
+    <string name="LOSING_INTERNET_CONNECTION" translatable="false">Low internet connectivity</string>
+    <string name="NO_INTERNET_CONNECTION" translatable="false">No internet connection</string>
 </resources>

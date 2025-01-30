@@ -1,6 +1,8 @@
 package com.screen.doorgelezen.screens.scanner
 
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DocumentScanner
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -17,7 +19,7 @@ fun SearchScanDetail(
     if (scan == null) {
         EmptyState(message = stringResource(R.string.scan_or_search_manually)) { size ->
             Icon(
-                painter = painterResource(id = R.drawable.document_scan),
+                Icons.Default.DocumentScanner,
                 contentDescription = stringResource(R.string.scanner),
                 modifier = Modifier.size(size),
                 tint = MaterialTheme.colorScheme.secondary

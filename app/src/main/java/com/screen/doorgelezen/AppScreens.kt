@@ -3,5 +3,6 @@ package com.screen.doorgelezen
 enum class AppScreens(val route: String) {
     SPLASH("splashScreen"),
     AUTHENTICATION("authentication"),
-    HOME("home");
+    UNASSIGNEDSTOCK("Unassigned Stock"),
+    SCANNER("Scanner")
 }

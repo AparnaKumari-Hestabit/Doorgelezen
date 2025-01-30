@@ -29,7 +29,7 @@ fun EmptyState(
         Text(
             message,
             modifier = Modifier.padding(top = paddingExtraLarge),
-            style = MaterialTheme.typography.headlineSmall
+            style = MaterialTheme.typography.titleLarge
         )
     }
 }

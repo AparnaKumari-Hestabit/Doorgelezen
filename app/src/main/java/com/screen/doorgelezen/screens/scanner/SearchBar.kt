@@ -16,6 +16,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import com.screen.doorgelezen.R
@@ -39,6 +40,10 @@ fun SearchBar(
                 .fillMaxSize()
                 .padding(paddingExtraSmall)
                 .focusRequester(focusRequester),
+            onClose = {
+                focusRequester.freeFocus()
+                searching = false
+                query = ""},
             keyboardActions = KeyboardActions(onDone = {
                 focusRequester.freeFocus()
                 searching = false
@@ -52,7 +57,8 @@ fun SearchBar(
         IconButton(onClick = { searching = true }) {
             Icon(
                 Icons.Filled.Search,
-                contentDescription = stringResource(R.string.search)
+                contentDescription = stringResource(R.string.search),
+                tint = Color.White
             )
         }
     }
