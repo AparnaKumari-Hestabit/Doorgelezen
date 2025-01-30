@@ -23,6 +23,9 @@ data class BolProduct(
     @Expose
     @SerializedName("assets")
     val assets: List<Assets>,
+    @Expose
+    @SerializedName("calculated")
+    val calculated: Calculated?,
 
     var uuid: String? = null
 )

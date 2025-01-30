@@ -48,6 +48,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.screen.doorgelezen.R
+import com.screen.doorgelezen.data.models.BolProduct
+import com.screen.doorgelezen.data.models.DbResult
 import com.screen.doorgelezen.data.repository.Resource
 import com.screen.doorgelezen.viewModels.AuthViewModel
 import com.screen.doorgelezen.viewModels.CatalogViewModel
@@ -119,17 +121,73 @@ fun ScannerScreen(viewModel: CatalogViewModel = hiltViewModel(),authViewModel: A
             Spacer(modifier = Modifier.height(16.dp))
 
             //SearchBar query Content
-            if (catalogResults.isEmpty()) {
-                EmptyState(message = stringResource(R.string.scan_or_search_manually)) { size ->
-                    Icon(
-                        Icons.Default.DocumentScanner,
-                        contentDescription = stringResource(R.string.scanner),
-                        modifier = Modifier.size(size),
-                        tint = MaterialTheme.colorScheme.secondary
+//            if (catalogResults.isEmpty()) {
+//                EmptyState(message = stringResource(R.string.scan_or_search_manually)) { size ->
+//                    Icon(
+//                        Icons.Default.DocumentScanner,
+//                        contentDescription = stringResource(R.string.scanner),
+//                        modifier = Modifier.size(size),
+//                        tint = MaterialTheme.colorScheme.secondary
+//                    )
+//                }
+//            } else {
+                val mockResults = listOf(
+                    BolProduct(
+                        ean = "1234567890",
+                        title = "Sample Product Title",
+                        imageURL = null,
+                        offers = emptyList(),
+                        dbResults = listOf(
+                            DbResult(
+                                id = 1,
+                                isbn = "1234567890",
+                                rank = 1,
+                                count = 10,
+                                category = "Category 1"
+                            ),
+                            DbResult(
+                                id = 1,
+                                isbn = "1234567890",
+                                rank = 7890,
+                                count = 10,
+                                category = "Category 2"
+                            )
+                        ),
+                        soldByBol = true,
+                        assets = emptyList(),
+                        calculated = null,
+                        uuid = "uuid-123"
+                    ),
+                    BolProduct(
+                        ean = "0987654321",
+                        title = "Another Sample Product Another Sample Product Another Sample Product Another Sample Product Another Sample Product",
+                        imageURL = null,
+                        offers = emptyList(),
+                        dbResults = listOf(
+                            DbResult(
+                                id = 1,
+                                isbn = "1234567890",
+                                rank = 1,
+                                count = 10,
+                                category = "Category 1"
+                            ),
+                            DbResult(
+                                id = 1,
+                                isbn = "1234567890",
+                                rank = 7890,
+                                count = 10,
+                                category = "Category 2"
+                            )
+                        ),
+                        soldByBol = true,
+                        assets = emptyList(),
+                        calculated = null,
+                        uuid = "uuid-456"
                     )
-                }
-            } else {
-                SearchListing(results = catalogResults, onNavigate = onNavigateToContent)
+                )
+
+//                SearchListing(results = catalogResults, onNavigate = onNavigateToContent)
+                SearchListing(results = mockResults, onNavigate = onNavigateToContent)
             }
         }
 
@@ -150,9 +208,7 @@ fun ScannerScreen(viewModel: CatalogViewModel = hiltViewModel(),authViewModel: A
             }
         }
     }
-
-
-}
+//}
 
 @Composable
 fun LogoutDialog(
