@@ -22,5 +22,7 @@ data class BolProduct(
     val soldByBol: Boolean,
     @Expose
     @SerializedName("assets")
-    val assets: List<Assets>
+    val assets: List<Assets>,
+
+    var uuid: String? = null
 )

@@ -23,7 +23,8 @@ import com.screen.doorgelezen.R
 
 @Composable
 fun SearchBar(
-    search: (String) -> Unit){
+    search: (String) -> Unit
+) {
     val paddingExtraSmall = dimensionResource(R.dimen.padding_small)
     val focusRequester = remember { FocusRequester() }
     var query by remember { mutableStateOf("") }
@@ -34,7 +35,9 @@ fun SearchBar(
             query = query,
             onSearch = { newQuery ->
                 query = newQuery
+                if (query.isNotBlank()) {
                 search(query)
+                }
             },
             modifier = Modifier
                 .fillMaxSize()

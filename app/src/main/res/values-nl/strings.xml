@@ -43,6 +43,7 @@
     <string name="discard_scan">Verwijder scan</string>
     <string name="discard_scan_confirmation">Weet je zeker dat je deze scan wil verwijderen?</string>
     <string name="no_bol_offers">Geen aanbod gevonden op bol.com</string>
+    <string name="no_bol_offers_msg">Bepaal zelf of je dit boek meeneemt of niet.</string>
     <string name="scan_or_type">Scan of type om te zoeken</string>
     <string name="scan_or_search_manually">Begin met scannen of zoek handmatig</string>
     <string name="done">Klaar</string>
@@ -74,6 +75,10 @@
     <string name="existing_unassigned_offer_warning_title">Bestaand niet-toegewezen boek gevonden</string>
     <string name="existing_unassigned_offer_warning_body">Bestaand boek gevonden met een andere conditie, de aanschaf van dit boek kan leiden tot problemen in het magazijn. Weet je zeker dat je dit boek wilt kopen?</string>
     <string name="confirm_stock_add_second_location">Boek toevoegen</string>
+    <string name="first_results">Eerste %1$d resultaten:</string>
+    <string name="search_result">Zoekresultaat</string>
+    <string name="max_bid">Max bod</string>
+    <string name="no_sales_rank">Geen sales rank</string>
     <plurals name="books_at_location_format">
         <item quantity="one">%1$d boek op locatie</item>
         <item quantity="other">%1$d boeken op locatie</item>

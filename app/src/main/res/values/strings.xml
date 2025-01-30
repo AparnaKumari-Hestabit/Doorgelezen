@@ -45,6 +45,7 @@
     <string name="discard_scan">Discard scan</string>
     <string name="discard_scan_confirmation">Are you sure you want to discard this scan?</string>
     <string name="no_bol_offers">No offers found on bol.com</string>
+    <string name="no_bol_offers_msg">Decide for yourself whether you take this book with you or not.</string>
     <string name="scan_or_type">Scan or type to search</string>
     <string name="scan_or_search_manually">Start scanning or search manually</string>
     <string name="done">Done</string>
@@ -76,6 +77,10 @@
     <string name="existing_unassigned_offer_warning_title">Existing unassigned offer found</string>
     <string name="existing_unassigned_offer_warning_body">Existing book found with a different condition, purchasing this book may lead to problems in the warehouse. Are you sure you want to purchase this book?</string>
     <string name="confirm_stock_add_second_location">Add book</string>
+    <string name="first_results">First %1$d results:</string>
+    <string name="search_result">Search result:</string>
+    <string name="max_bid">Max bid</string>
+    <string name="no_sales_rank">No sales rank</string>
     <plurals name="books_at_location_format">
         <item quantity="one">%1$d book at location</item>
         <item quantity="other">%1$d books at location</item>

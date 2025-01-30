@@ -25,6 +25,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.screen.doorgelezen.data.models.OfferLocation
 import com.screen.doorgelezen.ui.theme.offWhite
+import com.screen.doorgelezen.R
 
 @Composable
 fun OfferLocationRow(
@@ -37,8 +38,8 @@ fun OfferLocationRow(
     ),
     content: @Composable() () -> Unit = {}
 ) {
-    val paddingMedium = dimensionResource(com.screen.doorgelezen.R.dimen.padding_medium)
-    val paddingSmall = dimensionResource(com.screen.doorgelezen.R.dimen.padding_small)
+    val paddingMedium = dimensionResource(R.dimen.padding_medium)
+    val paddingSmall = dimensionResource(R.dimen.padding_small)
     val cornerRadius = 6
     val offer = offerLocation.offer
     val metadataColor = Color.DarkGray
@@ -57,10 +58,10 @@ fun OfferLocationRow(
                     .data(offer.imageUrl)
                     .crossfade(true)
                     .build(),
-                contentDescription = stringResource(id = com.screen.doorgelezen.R.string.cover_image),
+                contentDescription = stringResource(id = R.string.cover_image),
                 contentScale = ContentScale.Fit,
-                fallback = painterResource(id = com.screen.doorgelezen.R.drawable.bibliophile),
-                placeholder = painterResource(id = com.screen.doorgelezen.R.drawable.bibliophile),
+                fallback = painterResource(id = R.drawable.bibliophile),
+                placeholder = painterResource(id = R.drawable.bibliophile),
                 modifier = Modifier
                     .padding(
                         start = paddingMedium,
@@ -68,7 +69,7 @@ fun OfferLocationRow(
                         end = paddingSmall,
                         bottom = paddingMedium
                     )
-                    .widthIn(max = dimensionResource(com.screen.doorgelezen.R.dimen.book_cover_width))
+                    .widthIn(max = dimensionResource(R.dimen.book_cover_width))
                     .weight(1.0f)
             )
             Column(

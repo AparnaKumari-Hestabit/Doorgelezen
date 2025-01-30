@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.screen.doorgelezen.R
 
 @Composable
 fun Tag(
@@ -21,8 +22,8 @@ fun Tag(
     selected: Boolean = true,
     onSelect: (() -> Unit)? = null
 ) {
-    val paddingSmall = dimensionResource(com.screen.doorgelezen.R.dimen.padding_small)
-    val paddingMedium = dimensionResource(com.screen.doorgelezen.R.dimen.padding_medium)
+    val paddingSmall = dimensionResource(R.dimen.padding_small)
+    val paddingMedium = dimensionResource(R.dimen.padding_medium)
     val cornerRadius = 24
     val shape = RoundedCornerShape(cornerRadius)
     val backgroundColor: Color

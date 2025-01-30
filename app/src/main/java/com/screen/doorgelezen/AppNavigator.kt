@@ -21,14 +21,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.screen.doorgelezen.screens.Authentication.AuthenticationScreen
 import com.screen.doorgelezen.screens.Splash
 import com.screen.doorgelezen.AppScreens.*
 import com.screen.doorgelezen.screens.scanner.ScannerScreen
 import com.screen.doorgelezen.screens.scanner.SearchBar
+import com.screen.doorgelezen.screens.scanner.ScanContent
+import com.screen.doorgelezen.screens.scanner.ScannerScreen
 import com.screen.doorgelezen.screens.unassignedstock.UnassignedStockScreen
 import com.screen.doorgelezen.viewModels.CatalogViewModel
 import kotlinx.coroutines.launch
@@ -77,7 +81,11 @@ fun AppNavigator() {
         composable(UNASSIGNEDSTOCK.route) { UnassignedStockScreen() }
 
         composable(SCANNER.route) {
-            ScannerScreen {
+            ScannerScreen(
+                    onNavigateToContent = { uuid ->
+                        navController.navigate(AppScreens.createScanContentRoute(uuid))
+                    }
+                    ) {
                 navController.navigate(AUTHENTICATION.route){
                     popUpTo(navController.graph.startDestinationId) {
                         inclusive = true
@@ -85,6 +93,16 @@ fun AppNavigator() {
                     launchSingleTop = true
                 }
             }
+        }
+        composable(
+            route = SCAN_CONTENT.route,
+            arguments = listOf(
+                navArgument("uuid") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val uuid = backStackEntry.arguments?.getString("uuid")
+            requireNotNull(uuid) { "UUID parameter required." }
+            ScanContent(productUuid = uuid)
         }
     }
 }
