@@ -2,9 +2,10 @@ package com.screen.doorgelezen.data.repository
 
 import com.screen.doorgelezen.data.api.CatalogAPI
 import com.screen.doorgelezen.data.models.BolProduct
+import com.screen.doorgelezen.data.models.Calculated
 import com.screen.doorgelezen.data.models.CatalogResults
+import com.screen.doorgelezen.data.models.ConditionPrice
 import com.screen.doorgelezen.data.models.DbResult
-import com.screen.doorgelezen.data.repository.CatalogRepository.Companion.BOOK_CATEGORY_ID
 import com.screen.doorgelezen.utils.printDebug
 import javax.inject.Inject
 
@@ -41,32 +42,21 @@ class CatalogRepositoryImpl @Inject constructor(private val catalogAPI: CatalogA
                     ),
                     soldByBol = true,
                     assets = emptyList(),
-                    calculated = null,
+                    calculated = null
                 ),
                 BolProduct(
                     ean = "0987654321",
                     title = "Another Sample Product Another Sample Product Another Sample Product Another Sample Product Another Sample Product",
                     imageURL = null,
                     offers = emptyList(),
-                    dbResults = listOf(
-                        DbResult(
-                            id = 1,
-                            isbn = "1234567890",
-                            rank = 1,
-                            count = 10,
-                            category = "Category 1"
-                        ),
-                        DbResult(
-                            id = 1,
-                            isbn = "1234567890",
-                            rank = 7890,
-                            count = 10,
-                            category = "Category 2"
-                        )
-                    ),
+                    dbResults = emptyList(),
                     soldByBol = true,
                     assets = emptyList(),
-                    calculated = null,
+                    calculated = Calculated(
+                        newCondition = ConditionPrice(price = 19.99, maxBid = 15.50),
+                        asNewCondition = ConditionPrice(price = 17.99, maxBid = 14.00),
+                        goodCondition = ConditionPrice(price = 14.99, maxBid = 10.00)
+                    )
                 )
             )
 

@@ -79,7 +79,7 @@ fun SearchResultListItem(product: BolProduct, onClick: () -> Unit) {
 
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
-                .data("https://2.img-dpreview.com/files/p/E~C1000x0S4000x4000T1200x1200~articles/3925134721/0266554465.jpeg")
+                .data(mediumImageUrl)
                 .crossfade(true)
                 .build(),
             contentDescription = stringResource(R.string.cover_image),

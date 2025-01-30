@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -18,6 +19,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -26,6 +28,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -69,7 +74,7 @@ fun ScanContent() {
     ) {
         Column(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxWidth()
                 .align(Alignment.TopCenter),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -79,48 +84,51 @@ fun ScanContent() {
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.padding(
-                    top = mediumPadding,
-                    bottom = smallPadding
+                    top = mediumPadding
                 ),
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                fontSize = MaterialTheme.typography.headlineMedium.fontSize,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
             )
             Text(
-                product!!.ean,
-                style = MaterialTheme.typography.labelSmall,
-                textAlign = TextAlign.Center
+                modifier = Modifier.padding(vertical = smallPadding),
+                text = product.ean,
+                style = MaterialTheme.typography.bodyMedium.copy(fontSize = 17.sp),
+                fontWeight = FontWeight.W400,
+                letterSpacing = 1.5.sp,
+                color = Color.DarkGray
             )
             Text(
                 dbResultsText,
-                style = MaterialTheme.typography.labelSmall,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.titleSmall.copy(fontSize = 19.sp),
             )
 
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data("https://2.img-dpreview.com/files/p/E~C1000x0S4000x4000T1200x1200~articles/3925134721/0266554465.jpeg")
+                    .data(mediumImageUrl)
                     .crossfade(true)
                     .build(),
                 contentDescription = stringResource(R.string.cover_image),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .size(coverHeight)
+                    .size(height = coverHeight, width = 190.dp)
                     .padding(
-                        top = smallPadding,
-                        bottom = mediumPadding
+                        vertical = 20.dp
                     )
                     .align(Alignment.CenterHorizontally)
+                    .clip(RoundedCornerShape(5.dp))
             )
+
+            HorizontalDivider(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = smallPadding),
+                color = Color.LightGray
+            )
+
+            ScanConditionPicker(calculated = product.calculated, soldByBol = product.soldByBol)
         }
-
-        HorizontalDivider(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = smallPadding)
-                .align(Alignment.BottomCenter),
-            color = Color.LightGray
-        )
-
-        product.calculated?.let { it1 -> ScanConditionPicker(calculated = it1, soldByBol = product.soldByBol) }
     }
 }
-
