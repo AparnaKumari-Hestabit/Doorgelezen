@@ -31,6 +31,24 @@ class CatalogViewModel @Inject constructor(
     private val _error = MutableStateFlow("")
     val error = _error.asStateFlow()
 
+    private val _isSearching = MutableStateFlow(false)
+    val isSearching = _isSearching.asStateFlow()
+
+    private val _searchQuery = MutableStateFlow("")
+    val searchQuery = _searchQuery.asStateFlow()
+
+    fun setQuery(query: String = ""){
+        _searchQuery.value = query
+    }
+
+    fun clearCatalog(){
+        _catalogResults.value = emptyList()
+    }
+
+    fun setSearching(searching:Boolean){
+        _isSearching.value = searching
+    }
+
     fun search(query: String) = viewModelScope.launch {
         try {
             _isLoading.value = true

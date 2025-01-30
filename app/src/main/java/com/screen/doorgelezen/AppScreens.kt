@@ -5,6 +5,7 @@ enum class AppScreens(val route: String) {
     AUTHENTICATION("authentication"),
     UNASSIGNED_STOCK("Unassigned Stock"),
     SCANNER("Scanner"),
-    SCAN_CONTENT("scan_content");
+    SCANNER_SCREEN("ScannerScreen"),
+    SCAN_CONTENT("scanContent");
 
 }

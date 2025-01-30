@@ -14,6 +14,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,16 +27,18 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import com.screen.doorgelezen.R
+import com.screen.doorgelezen.viewModels.CatalogViewModel
 
 @Composable
 fun SearchBar(
-    search: (String) -> Unit
+    search: (String) -> Unit,
+    viewModel: CatalogViewModel
 ) {
     val paddingExtraSmall = dimensionResource(R.dimen.padding_small)
     val focusManager = LocalFocusManager.current
     val focusRequester = remember { FocusRequester() }
-    var query by remember { mutableStateOf("") }
-    var searching by remember { mutableStateOf(false) }
+    val query by viewModel.searchQuery.collectAsState()
+    val searching by viewModel.isSearching.collectAsState()
 
     AnimatedVisibility(
         searching,
@@ -45,7 +48,7 @@ fun SearchBar(
         SearchField(
             query = query,
             onSearch = { newQuery ->
-                query = newQuery
+                viewModel.setQuery(newQuery)
                 if (query.isNotBlank()) {
                     search(query)
                 }
@@ -56,8 +59,8 @@ fun SearchBar(
                 .focusRequester(focusRequester),
             onClose = {
                 focusManager.clearFocus()
-                searching = false
-                query = ""
+                viewModel.setSearching(false)
+                viewModel.setQuery()
             },
             keyboardActions = KeyboardActions(onDone = {
                 if (query.isNotBlank()) {
@@ -79,7 +82,7 @@ fun SearchBar(
         exit = fadeOut(animationSpec = tween(durationMillis = 100, easing = EaseInOutQuad))
     ) {
         IconButton(onClick = {
-            searching = true
+            viewModel.setSearching(true)
         }) {
             Icon(
                 Icons.Filled.Search,

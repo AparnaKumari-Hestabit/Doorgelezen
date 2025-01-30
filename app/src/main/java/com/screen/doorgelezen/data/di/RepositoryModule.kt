@@ -9,19 +9,24 @@ import com.screen.doorgelezen.data.repository.StockRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.scopes.ViewModelScoped
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @Module
-@InstallIn(SingletonComponent::class)
+@InstallIn(ViewModelComponent::class)
 class RepositoryModule {
 
     @Provides
+    @ViewModelScoped
     fun provideAuthRepository(impl: AuthRepositoryImpl):AuthRepository = impl
 
     @Provides
+    @ViewModelScoped
     fun provideStockRepository(impl :StockRepositoryImpl) : StockRepository = impl
 
     @Provides
+    @ViewModelScoped
     fun provideCatalogRepository(impl : CatalogRepositoryImpl): CatalogRepository = impl
 }

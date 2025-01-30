@@ -38,7 +38,7 @@ import java.security.PrivateKey
 import java.util.UUID
 
 @Composable
-fun ScanContent() {
+fun ScanContent(viewModel: CatalogViewModel) {
     val smallPadding = dimensionResource(R.dimen.padding_small)
     val mediumPadding = dimensionResource(R.dimen.padding_medium)
     val coverHeight = dimensionResource(R.dimen.scan_cover_height)

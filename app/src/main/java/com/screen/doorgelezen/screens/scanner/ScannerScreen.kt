@@ -62,7 +62,11 @@ import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ScannerScreen(viewModel: CatalogViewModel = hiltViewModel(), authViewModel: AuthViewModel = hiltViewModel(), onNavigateToContent: () -> Unit, onLogout: () -> Unit) {
+fun ScannerScreen(
+    viewModel: CatalogViewModel,
+    authViewModel: AuthViewModel = hiltViewModel(),
+    onNavigateToContent: () -> Unit
+) {
 
     val catalogResults by viewModel.catalogResults.collectAsState()
     val isCatalogLoading by viewModel.isLoading.collectAsState()
@@ -70,126 +74,41 @@ fun ScannerScreen(viewModel: CatalogViewModel = hiltViewModel(), authViewModel: 
 
     ScanDataReceiver(stringResource(R.string.scan_intent_action), viewModel::search)
 
-
-    var showLogoutAlert by remember { mutableStateOf(false) }
-    val snackbarHostState = remember { SnackbarHostState() }
-    val coroutineScope = rememberCoroutineScope()
     val isLoading by authViewModel.isLoading.collectAsState()
-    val logoutFlow by authViewModel.loginFlow.collectAsState()
-    logoutFlow.let {
-        when(it){
-            is Resource.Success -> {
-                onLogout()
-            }
-            else-> {
-                //TODO: Already handled
-            }
-        }
-    }
 
-    Scaffold(
-        snackbarHost = { SnackbarHost(snackbarHostState) },
-        topBar = {
-            TopAppBar(
-                title = { Text(stringResource(R.string.scanner), color = Color.White) },
-                actions = {
-                    SearchBar(search = viewModel::search)
-                    IconButton({
-                        showLogoutAlert = true
-                    }) {
-                        Icon(Icons.Default.Logout, "Logout", tint = Color.White)
-                    }
-                },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary
-                )
-            )
-        })
-    { paddingValues ->
-
-        if(isLoading || isCatalogLoading) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .zIndex(2f)
-                    .background(Color.Black.copy(0.5f)),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator(color = Color.White)
-            }
-        }
-
-        Column(
+    if (isLoading || isCatalogLoading) {
+        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
+                .zIndex(2f)
+                .background(Color.Black.copy(0.5f)),
+            contentAlignment = Alignment.Center
         ) {
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-//            SearchBar query Content
-            if (catalogResults.isEmpty()) {
-                EmptyState(message = stringResource(R.string.scan_or_search_manually)) { size ->
-                    Icon(
-                        Icons.Default.DocumentScanner,
-                        contentDescription = stringResource(R.string.scanner),
-                        modifier = Modifier.size(size),
-                        tint = MaterialTheme.colorScheme.secondary
-                    )
-                }
-            } else {
-
-                SearchListing(results = catalogResults, onNavigate = onNavigateToContent)
-            }
-        }
-
-        if(showLogoutAlert) {
-            LogoutDialog(onCancel = {
-                showLogoutAlert = false
-            }) {
-                showLogoutAlert = false
-                authViewModel.logout { message ->
-                    coroutineScope.launch {
-                        snackbarHostState.showSnackbar(
-                            message = message ?: "Something went wrong",
-                            duration = SnackbarDuration.Short
-                        )
-                    }
-                }
-
-            }
+            CircularProgressIndicator(color = Color.White)
         }
     }
-}
 
-@Composable
-fun LogoutDialog(
-    onCancel: () -> Unit,
-    onConfirm: () -> Unit
-) {
-    AlertDialog(
-        title = {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(10.dp)
-            ) {
-                Icon(Icons.Default.Logout, "Logout")
-                Text("Logout")
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding()
+    ) {
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+//            SearchBar query Content
+        if (catalogResults.isEmpty()) {
+            EmptyState(message = stringResource(R.string.scan_or_search_manually)) { size ->
+                Icon(
+                    Icons.Default.DocumentScanner,
+                    contentDescription = stringResource(R.string.scanner),
+                    modifier = Modifier.size(size),
+                    tint = MaterialTheme.colorScheme.secondary
+                )
             }
-        },
-        text = { Text("Are you sure you want to logout of your account ?") },
-        onDismissRequest = {
-            onCancel()
-        },
-        confirmButton = {
-            TextButton({onConfirm()}) {
-                Text("Logout")
-            }
-        },
-        dismissButton = {
-            TextButton({onCancel()}) {
-                Text("Cancel")
-            }
-        },
-    )
+        } else {
+
+            SearchListing(results = catalogResults, onNavigate = onNavigateToContent)
+        }
+    }
 }
