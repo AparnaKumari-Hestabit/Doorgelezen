@@ -17,8 +17,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.screen.doorgelezen.R
 import com.screen.doorgelezen.data.models.ConditionPrice
 import com.screen.doorgelezen.utils.formatPrice
@@ -37,21 +39,8 @@ fun ConditionItem(
         modifier = Modifier
             .fillMaxWidth()
     ) {
-
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = extraSmallPadding),
-            horizontalArrangement = Arrangement.End
-        ) {
-            Text(
-                text = stringResource(id = R.string.max_bid),
-                style = MaterialTheme.typography.bodySmall,
-                fontWeight = FontWeight.SemiBold
-            )
-        }
-        Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding(vertical = extraSmallPadding),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -66,20 +55,23 @@ fun ConditionItem(
                 )
                 Text(
                     text = condition,
-                    style = MaterialTheme.typography.bodyLarge
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontSize = 19.sp,
+                    fontStyle = FontStyle.Italic
                 )
                 if (soldByBol && condition == stringResource(id = R.string.new_)) {
                     Icon(
                         Icons.Outlined.Verified,
                         stringResource(R.string.sold_by_bol_checkmark),
-                        tint = MaterialTheme.colorScheme.primary
+                        tint = MaterialTheme.colorScheme.onSurface
                     )
                 }
             }
 
             Text(
                 text = formatPrice(priceDetails.maxBid, "EUR"),
-                style = MaterialTheme.typography.bodyLarge
+                style = MaterialTheme.typography.bodyLarge,
+                fontSize = 19.sp
             )
         }
         if (isFirst && isDividerVisible) {
