@@ -18,9 +18,10 @@ import androidx.compose.ui.unit.sp
 import com.screen.doorgelezen.R
 import com.screen.doorgelezen.data.models.BolProduct
 import java.util.UUID
+import com.screen.doorgelezen.utils.printDebug
 
 @Composable
-fun SearchListing(results: List<BolProduct>, onNavigate: (UUID) -> Unit) {
+fun SearchListing(results: List<BolProduct>, onNavigate: () -> Unit) {
 
     val text = if (results.size == 1) {
         stringResource(R.string.search_result)
@@ -32,13 +33,17 @@ fun SearchListing(results: List<BolProduct>, onNavigate: (UUID) -> Unit) {
         modifier = Modifier
             .fillMaxSize()
     ) {
-        Column {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
             Text(
                 text = text,
                 style = MaterialTheme.typography.titleSmall.copy(fontSize = 15.sp),
-                fontWeight = FontWeight.SemiBold,
+                fontWeight = FontWeight.Bold,
                 modifier = Modifier
-                    .padding(horizontal = 16.dp, vertical = 10.dp)
+                    .padding(vertical = 10.dp, horizontal = 16.dp),
+                fontSize = 17.sp
             )
             LazyColumn {
                 items(results.size) { index ->
@@ -48,13 +53,9 @@ fun SearchListing(results: List<BolProduct>, onNavigate: (UUID) -> Unit) {
                         modifier = Modifier.padding(vertical = 2.dp)
                     )
                     SearchResultListItem(product = results[index],
-                        onClick = {
-//                            onNavigate(AppScreens.ScanContent(results[index].uuid))
-
-//                            navController.navigate("scanContent/${catalogResults[index].uuid}")
-
-                            onNavigate(results[index].uuid)
-                        })
+                        onClick =
+                            onNavigate
+                    )
                 }
             }
         }

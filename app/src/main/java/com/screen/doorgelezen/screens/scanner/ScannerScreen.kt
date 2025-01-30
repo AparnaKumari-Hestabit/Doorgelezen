@@ -50,7 +50,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.screen.doorgelezen.R
+import com.screen.doorgelezen.data.models.BolProduct
+import com.screen.doorgelezen.data.models.DbResult
 import com.screen.doorgelezen.data.repository.Resource
+import com.screen.doorgelezen.utils.printDebug
 import com.screen.doorgelezen.viewModels.AuthViewModel
 import com.screen.doorgelezen.viewModels.CatalogViewModel
 import kotlinx.coroutines.launch
@@ -59,13 +62,14 @@ import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ScannerScreen(viewModel: CatalogViewModel = hiltViewModel(), authViewModel: AuthViewModel = hiltViewModel(), onNavigateToContent: (UUID) -> Unit, onLogout: () -> Unit) {
+fun ScannerScreen(viewModel: CatalogViewModel = hiltViewModel(), authViewModel: AuthViewModel = hiltViewModel(), onNavigateToContent: () -> Unit, onLogout: () -> Unit) {
 
     val catalogResults by viewModel.catalogResults.collectAsState()
     val isCatalogLoading by viewModel.isLoading.collectAsState()
     val isCatalogError by viewModel.error.collectAsState()
 
     ScanDataReceiver(stringResource(R.string.scan_intent_action), viewModel::search)
+
 
     var showLogoutAlert by remember { mutableStateOf(false) }
     val snackbarHostState = remember { SnackbarHostState() }
@@ -123,7 +127,7 @@ fun ScannerScreen(viewModel: CatalogViewModel = hiltViewModel(), authViewModel: 
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            //SearchBar query Content
+//            SearchBar query Content
             if (catalogResults.isEmpty()) {
                 EmptyState(message = stringResource(R.string.scan_or_search_manually)) { size ->
                     Icon(
@@ -134,6 +138,7 @@ fun ScannerScreen(viewModel: CatalogViewModel = hiltViewModel(), authViewModel: 
                     )
                 }
             } else {
+
                 SearchListing(results = catalogResults, onNavigate = onNavigateToContent)
             }
         }
@@ -155,8 +160,6 @@ fun ScannerScreen(viewModel: CatalogViewModel = hiltViewModel(), authViewModel: 
             }
         }
     }
-
-
 }
 
 @Composable

@@ -1,8 +1,6 @@
 package com.screen.doorgelezen.data.models
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import com.google.gson.annotations.Expose
+
 import com.google.gson.annotations.SerializedName
 import doorgelezen.models.DeliveryMethod
 import doorgelezen.models.FulfilmentMethod
