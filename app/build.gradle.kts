@@ -87,6 +87,8 @@ dependencies {
     implementation(libs.coil.compose)
 
     implementation(libs.androidx.security.crypto)
+
+    implementation(libs.androidx.material.icons.extended)
 }
 
 

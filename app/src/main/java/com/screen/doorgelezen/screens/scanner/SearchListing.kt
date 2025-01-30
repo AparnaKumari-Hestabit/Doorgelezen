@@ -11,33 +11,49 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.screen.doorgelezen.R
+import com.screen.doorgelezen.data.models.BolProduct
 
 @Composable
-fun SearchListing() {
+fun SearchListing(results: List<BolProduct>, onNavigate: (String) -> Unit) {
+
+    val text = if (results.size == 1) {
+        stringResource(R.string.search_result)
+    } else {
+        stringResource(R.string.first_results, results.size)
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
     ) {
         Column {
             Text(
-                text = "Eerste 4 resultaten:",
+                text = text,
                 style = MaterialTheme.typography.titleSmall.copy(fontSize = 15.sp),
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier
                     .padding(horizontal = 16.dp, vertical = 10.dp)
             )
             LazyColumn {
-                items(4) {
-                    // Add a horizontal-divider above each item
+                items(results.size) { index ->
                     HorizontalDivider(
                         color = Color.LightGray,
                         thickness = 1.dp,
                         modifier = Modifier.padding(vertical = 2.dp)
                     )
-                    SearchResultListItem()
+                    SearchResultListItem(product = results[index],
+                        onClick = {
+//                            onNavigate(AppScreens.ScanContent(results[index].uuid))
+
+//                            navController.navigate("scanContent/${catalogResults[index].uuid}")
+
+                            results[index].uuid?.let { onNavigate(it) }
+                        })
                 }
             }
         }
