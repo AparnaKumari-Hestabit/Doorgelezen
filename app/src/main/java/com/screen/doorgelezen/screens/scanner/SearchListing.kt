@@ -17,9 +17,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.screen.doorgelezen.R
 import com.screen.doorgelezen.data.models.BolProduct
+import java.util.UUID
 
 @Composable
-fun SearchListing(results: List<BolProduct>, onNavigate: (String) -> Unit) {
+fun SearchListing(results: List<BolProduct>, onNavigate: (UUID) -> Unit) {
 
     val text = if (results.size == 1) {
         stringResource(R.string.search_result)
@@ -52,7 +53,7 @@ fun SearchListing(results: List<BolProduct>, onNavigate: (String) -> Unit) {
 
 //                            navController.navigate("scanContent/${catalogResults[index].uuid}")
 
-                            results[index].uuid?.let { onNavigate(it) }
+                            onNavigate(results[index].uuid)
                         })
                 }
             }

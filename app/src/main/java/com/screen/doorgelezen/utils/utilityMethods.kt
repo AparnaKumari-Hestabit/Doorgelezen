@@ -10,7 +10,7 @@ fun printDebug(value:String){
 }
 
 fun printError(value:String){
-    Log.e("DEBUG", "printDebug: $value")
+    Log.e("ERROR", "printDebug: $value")
 }
 
 fun isValidEmail(email: String): Boolean {

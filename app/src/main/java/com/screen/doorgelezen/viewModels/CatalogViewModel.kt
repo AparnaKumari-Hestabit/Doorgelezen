@@ -5,36 +5,56 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.screen.doorgelezen.data.models.BolProduct
 import com.screen.doorgelezen.data.repository.CatalogRepository
+import com.screen.doorgelezen.data.repository.CatalogRepositoryImpl
+import com.screen.doorgelezen.data.repository.Resource
+import com.screen.doorgelezen.utils.printError
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.util.Queue
 import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
 class CatalogViewModel @Inject constructor(
-    private val repository: CatalogRepository
+    private val catalogRepository: CatalogRepository
 ) : ViewModel() {
 
     private val _catalogResults = MutableStateFlow<List<BolProduct>>(emptyList())
     val catalogResults: StateFlow<List<BolProduct>> = _catalogResults
 
-    fun search(query: String) {
-        viewModelScope.launch {
-            try {
-                val response = repository.searchCatalog(query)
-                if (response.isSuccessful) {
-                    val results = response.body()?.results?.map { product ->
-                        product.copy(uuid = UUID.randomUUID().toString())
-                    } ?: emptyList()
-                    _catalogResults.value = results
-                } else {
-                    Log.e("CatalogViewModel", "API Error: ${response.errorBody()}")
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading = _isLoading.asStateFlow()
+
+    private val _error = MutableStateFlow("")
+    val error = _error.asStateFlow()
+
+    fun search(query: String) = viewModelScope.launch {
+        try {
+            _isLoading.value = true
+            val response = catalogRepository.searchCatalog(query)
+            response.let {
+                when(it){
+                    is Resource.Failure -> {
+                        _isLoading.value = false
+                        _error.value = it.exception.message.toString()
+                    }
+                    Resource.Loading -> {
+                        _isLoading.value = true
+                    }
+                    is Resource.Success -> {
+                        _isLoading.value = false
+                        _catalogResults.value = it.result.results
+                    }
                 }
-            } catch (e: Exception) {
-                Log.e("CatalogViewModel", "Exception: ${e.message}", e)
             }
+        }catch (e:Exception){
+            e.printStackTrace()
+            _isLoading.value = false
+            printError(e.message.toString())
+            _error.value = e.message.toString()
         }
     }
 }

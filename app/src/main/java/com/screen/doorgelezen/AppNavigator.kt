@@ -36,6 +36,7 @@ import com.screen.doorgelezen.screens.scanner.ScannerScreen
 import com.screen.doorgelezen.screens.unassignedstock.UnassignedStockScreen
 import com.screen.doorgelezen.viewModels.CatalogViewModel
 import kotlinx.coroutines.launch
+import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -78,14 +79,14 @@ fun AppNavigator() {
             }
         }
 
-        composable(UNASSIGNEDSTOCK.route) { UnassignedStockScreen() }
+        composable(UNASSIGNED_STOCK.route) { UnassignedStockScreen() }
 
         composable(SCANNER.route) {
             ScannerScreen(
                     onNavigateToContent = { uuid ->
-                        navController.navigate(AppScreens.createScanContentRoute(uuid))
+                        navController.navigate("${SCAN_CONTENT.route}/$uuid")
                     }
-                    ) {
+            ) {
                 navController.navigate(AUTHENTICATION.route){
                     popUpTo(navController.graph.startDestinationId) {
                         inclusive = true
@@ -95,14 +96,14 @@ fun AppNavigator() {
             }
         }
         composable(
-            route = SCAN_CONTENT.route,
+            route = "${SCAN_CONTENT.route}/{uuid}",
             arguments = listOf(
                 navArgument("uuid") { type = NavType.StringType }
             )
         ) { backStackEntry ->
             val uuid = backStackEntry.arguments?.getString("uuid")
             requireNotNull(uuid) { "UUID parameter required." }
-            ScanContent(productUuid = uuid)
+            ScanContent(productUuid = UUID.fromString(uuid))
         }
     }
 }

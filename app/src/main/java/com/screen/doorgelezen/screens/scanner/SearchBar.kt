@@ -1,5 +1,10 @@
 package com.screen.doorgelezen.screens.scanner
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.EaseInOutQuad
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
@@ -17,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import com.screen.doorgelezen.R
@@ -26,17 +32,22 @@ fun SearchBar(
     search: (String) -> Unit
 ) {
     val paddingExtraSmall = dimensionResource(R.dimen.padding_small)
+    val focusManager = LocalFocusManager.current
     val focusRequester = remember { FocusRequester() }
     var query by remember { mutableStateOf("") }
     var searching by remember { mutableStateOf(false) }
 
-    if (searching) {
+    AnimatedVisibility(
+        searching,
+        enter = fadeIn(animationSpec = tween(durationMillis = 100, delayMillis = 100, easing = EaseInOutQuad)),
+        exit = fadeOut(animationSpec = tween(durationMillis = 100, easing = EaseInOutQuad))
+    ) {
         SearchField(
             query = query,
             onSearch = { newQuery ->
                 query = newQuery
                 if (query.isNotBlank()) {
-                search(query)
+                    search(query)
                 }
             },
             modifier = Modifier
@@ -44,20 +55,32 @@ fun SearchBar(
                 .padding(paddingExtraSmall)
                 .focusRequester(focusRequester),
             onClose = {
-                focusRequester.freeFocus()
-                searching = false
-                query = ""},
-            keyboardActions = KeyboardActions(onDone = {
-                focusRequester.freeFocus()
+                focusManager.clearFocus()
                 searching = false
                 query = ""
+            },
+            keyboardActions = KeyboardActions(onDone = {
+                if (query.isNotBlank()) {
+                    search(query)
+                }
+                focusManager.clearFocus()
             })
         )
         LaunchedEffect(searching) {
-            focusRequester.requestFocus()
+            if(searching) {
+                focusRequester.requestFocus()
+            }
         }
-    } else {
-        IconButton(onClick = { searching = true }) {
+    }
+
+    AnimatedVisibility(
+        !searching,
+        enter = fadeIn(animationSpec = tween(durationMillis = 100, delayMillis = 100, easing = EaseInOutQuad)),
+        exit = fadeOut(animationSpec = tween(durationMillis = 100, easing = EaseInOutQuad))
+    ) {
+        IconButton(onClick = {
+            searching = true
+        }) {
             Icon(
                 Icons.Filled.Search,
                 contentDescription = stringResource(R.string.search),

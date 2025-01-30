@@ -2,6 +2,8 @@ package com.screen.doorgelezen.data.di
 
 import com.screen.doorgelezen.data.repository.AuthRepository
 import com.screen.doorgelezen.data.repository.AuthRepositoryImpl
+import com.screen.doorgelezen.data.repository.CatalogRepository
+import com.screen.doorgelezen.data.repository.CatalogRepositoryImpl
 import com.screen.doorgelezen.data.repository.StockRepository
 import com.screen.doorgelezen.data.repository.StockRepositoryImpl
 import dagger.Module
@@ -20,4 +22,6 @@ class RepositoryModule {
     @Provides
     fun provideStockRepository(impl :StockRepositoryImpl) : StockRepository = impl
 
+    @Provides
+    fun provideCatalogRepository(impl : CatalogRepositoryImpl): CatalogRepository = impl
 }

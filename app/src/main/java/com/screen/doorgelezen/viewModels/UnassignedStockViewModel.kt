@@ -17,9 +17,6 @@ class UnassignedStockViewModel @Inject constructor(private val stockRepository: 
     private val _stocksFlow = MutableStateFlow<Resource<List<OfferLocation>>?>(null)
     val stocksFlow = _stocksFlow.asStateFlow()
 
-//    private val _isLoading = MutableStateFlow<Boolean>(false)
-//    val isLoading = _isLoading.asStateFlow()
-
     init {
         getStocks("UNSET")
     }

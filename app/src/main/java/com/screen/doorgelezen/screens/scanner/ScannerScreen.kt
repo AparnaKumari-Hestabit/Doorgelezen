@@ -2,6 +2,7 @@ package com.screen.doorgelezen.screens.scanner
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -42,6 +43,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -52,13 +54,16 @@ import com.screen.doorgelezen.data.repository.Resource
 import com.screen.doorgelezen.viewModels.AuthViewModel
 import com.screen.doorgelezen.viewModels.CatalogViewModel
 import kotlinx.coroutines.launch
+import java.util.UUID
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ScannerScreen(viewModel: CatalogViewModel = hiltViewModel(),authViewModel: AuthViewModel = hiltViewModel(), onNavigateToContent: (String) -> Unit,onLogout: () -> Unit) {
+fun ScannerScreen(viewModel: CatalogViewModel = hiltViewModel(), authViewModel: AuthViewModel = hiltViewModel(), onNavigateToContent: (UUID) -> Unit, onLogout: () -> Unit) {
 
     val catalogResults by viewModel.catalogResults.collectAsState()
+    val isCatalogLoading by viewModel.isLoading.collectAsState()
+    val isCatalogError by viewModel.error.collectAsState()
 
     ScanDataReceiver(stringResource(R.string.scan_intent_action), viewModel::search)
 
@@ -98,7 +103,7 @@ fun ScannerScreen(viewModel: CatalogViewModel = hiltViewModel(),authViewModel: A
         })
     { paddingValues ->
 
-        if(isLoading) {
+        if(isLoading || isCatalogLoading) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()

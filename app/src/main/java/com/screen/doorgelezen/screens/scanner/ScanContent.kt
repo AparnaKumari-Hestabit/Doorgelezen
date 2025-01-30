@@ -27,10 +27,11 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.screen.doorgelezen.R
 import com.screen.doorgelezen.data.models.BolProduct
+import java.util.UUID
 
 @Composable
 fun ScanContent(
-    productUuid: String
+    productUuid: UUID
 ) {
     val smallPadding = dimensionResource(R.dimen.padding_small)
     val mediumPadding = dimensionResource(R.dimen.padding_medium)

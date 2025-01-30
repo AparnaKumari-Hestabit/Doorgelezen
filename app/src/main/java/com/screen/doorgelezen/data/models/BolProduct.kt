@@ -3,6 +3,7 @@ package com.screen.doorgelezen.data.models
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import okhttp3.HttpUrl
+import java.util.UUID
 
 data class BolProduct(
     @Expose
@@ -24,5 +25,5 @@ data class BolProduct(
     @SerializedName("assets")
     val assets: List<Assets>,
 
-    var uuid: String? = null
+    var uuid: UUID = UUID.randomUUID()
 )
