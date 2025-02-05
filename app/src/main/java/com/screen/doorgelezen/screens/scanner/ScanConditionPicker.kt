@@ -44,7 +44,7 @@ fun ScanConditionPicker(
             fontSize = 19.sp
         )
 
-        if (calculated==null || calculated.asNewCondition==null || calculated.goodCondition==null || calculated.newCondition==null) {
+        if (calculated?.asNewCondition == null || calculated.goodCondition==null || calculated.newCondition==null || (calculated.asNewCondition.maxBid == 0.0 && calculated.goodCondition.maxBid == 0.0 && calculated.newCondition.maxBid == 0.0)) {
             //no offer available
             Text(modifier = Modifier.padding(vertical = paddingExtraLarge),
                 text = stringResource(R.string.no_bol_offers) + "\n" + stringResource(R.string.no_bol_offers_msg),

@@ -72,7 +72,7 @@ fun ScanContent(viewModel: CatalogViewModel) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                product!!.title,
+                product.title,
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.padding(

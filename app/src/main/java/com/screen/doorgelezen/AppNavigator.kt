@@ -87,6 +87,7 @@ fun AppNavigator() {
                         inclusive = true
                     }
                     launchSingleTop = true
+                    catalogViewModel.clearCatalog()
                 }
             }
 
@@ -105,6 +106,7 @@ fun ScannerNavigator(modifier: Modifier, catalogViewModel: CatalogViewModel, sna
         if(scannerNavController.currentBackStackEntry?.destination?.route ?: SCANNER_SCREEN.route == SCAN_CONTENT.route){
             scannerNavController.popBackStack()
         }
+        catalogViewModel.clearCatalog()
     }
 
     val focusManager = LocalFocusManager.current

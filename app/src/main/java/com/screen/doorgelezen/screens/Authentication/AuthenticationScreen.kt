@@ -33,6 +33,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.screen.doorgelezen.AppScreens
@@ -129,7 +130,6 @@ fun AuthenticationScreen(onNavigate: (AppScreens) -> Unit) {
                     )
                 }
 
-
                 Surface(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -142,7 +142,7 @@ fun AuthenticationScreen(onNavigate: (AppScreens) -> Unit) {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.spacedBy(paddingMedium),
-                        modifier = Modifier.padding(extraLargePadding),
+                        modifier = Modifier.fillMaxSize().padding(top = extraLargePadding).padding(horizontal = extraLargePadding),
                     ) {
                         OutlinedTextField(
                             value = email,
@@ -167,10 +167,10 @@ fun AuthenticationScreen(onNavigate: (AppScreens) -> Unit) {
                         )
                         Button(
                             modifier = Modifier
-                                .padding(paddingSmall)
                                 .fillMaxWidth()
                                 .height(buttonHeight),
                             onClick = submitWrapper,
+                            shape = RoundedCornerShape(5.dp),
                             enabled = email.isNotEmpty() && password.isNotEmpty() && isValidEmail(
                                 email
                             )

@@ -3,6 +3,8 @@ package com.screen.doorgelezen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.DisposableEffect
 import androidx.core.view.WindowCompat
 import com.screen.doorgelezen.ui.theme.DoorgelezenTheme
@@ -24,11 +26,14 @@ class MainActivity : ComponentActivity() {
         setContent {
             setStatusBarColor(false)
 
-            TimeBasedCrashCheck()
-            DoorgelezenTheme {
-                AppNavigator()
+            Surface(
+               color = MaterialTheme.colorScheme.surface
+            ) {
+                TimeBasedCrashCheck()
+                DoorgelezenTheme {
+                    AppNavigator()
+                }
             }
-
         }
     }
 }

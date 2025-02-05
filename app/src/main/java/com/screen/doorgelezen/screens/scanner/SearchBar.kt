@@ -1,5 +1,6 @@
 package com.screen.doorgelezen.screens.scanner
 
+import android.view.ViewTreeObserver
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.EaseInOutQuad
 import androidx.compose.animation.core.tween
@@ -13,15 +14,19 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import com.screen.doorgelezen.R
@@ -38,6 +43,12 @@ fun SearchBar(
     val focusRequester = remember { FocusRequester() }
     val query by viewModel.searchQuery.collectAsState()
     val searching by viewModel.isSearching.collectAsState()
+
+    val isKeyboardVisible = isSoftwareKeyboardVisible()
+
+    if(isKeyboardVisible){
+        viewModel.clearCatalog()
+    }
 
     AnimatedVisibility(
         searching,
@@ -62,7 +73,7 @@ fun SearchBar(
                 viewModel.setSearching(false)
                 viewModel.setQuery()
             },
-            keyboardActions = KeyboardActions(onDone = {
+            keyboardActions = KeyboardActions(onSearch = {
                 printDebug("query2: $query")
                 if (query.isNotBlank()) {
                     search(query)
@@ -92,4 +103,28 @@ fun SearchBar(
             )
         }
     }
+}
+
+@Composable
+fun isSoftwareKeyboardVisible(): Boolean {
+    val view = LocalView.current
+    val rootView = remember { view.rootView }
+    var isKeyboardVisible by remember { mutableStateOf(false) }
+
+    DisposableEffect(rootView) {
+        val listener = ViewTreeObserver.OnGlobalLayoutListener {
+            val rect = android.graphics.Rect()
+            rootView.getWindowVisibleDisplayFrame(rect)
+            val screenHeight = rootView.height
+            val keypadHeight = screenHeight - rect.bottom
+            isKeyboardVisible = keypadHeight > screenHeight * 0.15 // Keyboard is considered visible if height is significant
+        }
+
+        rootView.viewTreeObserver.addOnGlobalLayoutListener(listener)
+        onDispose {
+            rootView.viewTreeObserver.removeOnGlobalLayoutListener(listener)
+        }
+    }
+
+    return isKeyboardVisible
 }

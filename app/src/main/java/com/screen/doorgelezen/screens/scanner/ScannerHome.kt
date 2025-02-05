@@ -12,6 +12,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -80,19 +81,27 @@ fun ScannerHome(
         })
     { paddingValues ->
 
-        ScannerNavigator(modifier = Modifier.padding(paddingValues), catalogViewModel = viewModel, snackbarHostState = snackbarHostState)
+        Surface(
+            color = Color.White,
+        ) {
+            ScannerNavigator(
+                modifier = Modifier.padding(paddingValues),
+                catalogViewModel = viewModel,
+                snackbarHostState = snackbarHostState
+            )
 
-        if (showLogoutAlert) {
-            LogoutDialog(onCancel = {
-                showLogoutAlert = false
-            }) {
-                showLogoutAlert = false
-                authViewModel.logout { message ->
-                    coroutineScope.launch {
-                        snackbarHostState.showSnackbar(
-                            message = message ?: "Er ging iets mis, probeer het later opnieuw.",
-                            duration = SnackbarDuration.Short
-                        )
+            if (showLogoutAlert) {
+                LogoutDialog(onCancel = {
+                    showLogoutAlert = false
+                }) {
+                    showLogoutAlert = false
+                    authViewModel.logout { message ->
+                        coroutineScope.launch {
+                            snackbarHostState.showSnackbar(
+                                message = message ?: "Er ging iets mis, probeer het later opnieuw.",
+                                duration = SnackbarDuration.Short
+                            )
+                        }
                     }
                 }
             }
