@@ -14,16 +14,16 @@ data class BolProduct(
     @SerializedName("image_url")
     val imageURL: HttpUrl?,
     @Expose
-    val offers: List<ThirdPartyOffer>,
+    val offers: List<ThirdPartyOffer> = emptyList(),
     @Expose
     @SerializedName("db_results")
-    val dbResults: List<DbResult>,
+    val dbResults: List<DbResult> = emptyList(),
     @Expose
     @SerializedName("sold_by_bol")
     val soldByBol: Boolean,
     @Expose
     @SerializedName("assets")
-    val assets: List<Assets>,
+    val assets: List<Assets> = emptyList(),
     @Expose
     @SerializedName("calculated")
     val calculated: Calculated?,

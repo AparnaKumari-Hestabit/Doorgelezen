@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.sp
 import com.screen.doorgelezen.R
 import com.screen.doorgelezen.data.models.Calculated
 import com.screen.doorgelezen.utils.getConditionList
-import com.screen.doorgelezen.utils.printDebug
 
 @Composable
 fun ScanConditionPicker(
@@ -45,7 +44,7 @@ fun ScanConditionPicker(
             fontSize = 19.sp
         )
 
-        if (calculated==null) {
+        if (calculated==null || calculated.asNewCondition==null || calculated.goodCondition==null || calculated.newCondition==null) {
             //no offer available
             Text(modifier = Modifier.padding(vertical = paddingExtraLarge),
                 text = stringResource(R.string.no_bol_offers) + "\n" + stringResource(R.string.no_bol_offers_msg),

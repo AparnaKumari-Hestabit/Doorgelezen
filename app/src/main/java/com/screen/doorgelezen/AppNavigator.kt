@@ -2,9 +2,8 @@ package com.screen.doorgelezen
 
 import android.app.Activity
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -15,22 +14,27 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import com.screen.doorgelezen.screens.Authentication.AuthenticationScreen
 import com.screen.doorgelezen.screens.Splash
 import com.screen.doorgelezen.AppScreens.*
 import com.screen.doorgelezen.screens.scanner.ScannerScreen
-import com.screen.doorgelezen.screens.scanner.SearchBar
 import com.screen.doorgelezen.screens.scanner.ScanContent
 import com.screen.doorgelezen.screens.scanner.ScannerHome
-import com.screen.doorgelezen.screens.scanner.ScannerScreen
 import com.screen.doorgelezen.screens.unassignedstock.UnassignedStockScreen
-import com.screen.doorgelezen.utils.printDebug
 import com.screen.doorgelezen.viewModels.CatalogViewModel
-import kotlinx.coroutines.launch
-import java.util.UUID
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import com.screen.doorgelezen.utils.printDebug
+import kotlinx.coroutines.delay
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
 fun AppNavigator() {
     val navController = rememberNavController()
@@ -92,7 +96,7 @@ fun AppNavigator() {
 }
 
 @Composable
-fun ScannerNavigator(modifier: Modifier, catalogViewModel: CatalogViewModel){
+fun ScannerNavigator(modifier: Modifier, catalogViewModel: CatalogViewModel, snackbarHostState: SnackbarHostState){
     val scannerNavController = rememberNavController()
 
     val isSearching by catalogViewModel.isSearching.collectAsState()
@@ -130,7 +134,8 @@ fun ScannerNavigator(modifier: Modifier, catalogViewModel: CatalogViewModel){
                     catalogViewModel.setQuery()
                     catalogViewModel.setSearching(false)
                     scannerNavController.navigate(SCAN_CONTENT.route)
-                }
+                },
+                snackbarHostState = snackbarHostState
             )
         }
 
@@ -141,3 +146,4 @@ fun ScannerNavigator(modifier: Modifier, catalogViewModel: CatalogViewModel){
         }
     }
 }
+

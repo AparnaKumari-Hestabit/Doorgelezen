@@ -3,12 +3,13 @@
     <string name="scan_intent_action" translatable="false">com.screen.doorgelezen.SCAN</string>
     <string name="datawedge_intent_key_data" translatable="false">com.symbol.datawedge.data_string</string>
     <string name="invalid_credentials_error">Invalid email address and/or password.</string>
+    <string name="credentials_error">Check your credentials or try again later!</string>
     <string name="invalid_email_address">Invalid email address.</string>
     <string name="woman_reading_book">Woman reading book.</string>
     <string name="email_address">Email address</string>
     <string name="password">Password</string>
     <string name="log_in">Log in</string>
-    <string name="log_out">Log out</string>
+    <string name="log_out">Logout</string>
     <string name="log_out_confirm">Are you sure you want to log out?</string>
     <string name="cancel">Cancel</string>
     <string name="minimal_as_new_price">Minimal "as new" price</string>
@@ -90,8 +91,9 @@
         <item quantity="other">%1$d books available</item>
     </plurals>
 
-    <string name="BACK_ONLINE" translatable="false">Back online</string>
-    <string name="INTERNET_CONNECTION_LOST" translatable="false">Connection lost</string>
-    <string name="LOSING_INTERNET_CONNECTION" translatable="false">Low internet connectivity</string>
-    <string name="NO_INTERNET_CONNECTION" translatable="false">No internet connection</string>
+    <string name="BACK_ONLINE">Back online</string>
+    <string name="INTERNET_CONNECTION_LOST">Connection lost</string>
+    <string name="LOSING_INTERNET_CONNECTION">Low internet connectivity</string>
+    <string name="NO_INTERNET_CONNECTION">No internet connection</string>
+    <string name="logout_error">Error logging out user!</string>
 </resources>

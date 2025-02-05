@@ -1,11 +1,10 @@
 package com.screen.doorgelezen.viewModels
 
-import android.util.Log
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.screen.doorgelezen.data.models.BolProduct
 import com.screen.doorgelezen.data.repository.CatalogRepository
-import com.screen.doorgelezen.data.repository.CatalogRepositoryImpl
 import com.screen.doorgelezen.data.repository.Resource
 import com.screen.doorgelezen.utils.printError
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,8 +12,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.util.Queue
-import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -39,6 +36,10 @@ class CatalogViewModel @Inject constructor(
 
     fun setQuery(query: String = ""){
         _searchQuery.value = query
+    }
+
+    fun clearErrorState(){
+        _error.value = ""
     }
 
     fun clearCatalog(){

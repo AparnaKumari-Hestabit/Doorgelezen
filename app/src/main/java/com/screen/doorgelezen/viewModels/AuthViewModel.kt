@@ -2,7 +2,6 @@ package com.screen.doorgelezen.viewModels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.screen.doorgelezen.AppScreens
 import com.screen.doorgelezen.data.models.AuthModel
 import com.screen.doorgelezen.data.repository.AuthRepository
 import com.screen.doorgelezen.data.repository.Resource

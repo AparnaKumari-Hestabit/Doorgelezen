@@ -1,7 +1,6 @@
 package com.screen.doorgelezen.data.repository
 
 import com.screen.doorgelezen.data.models.AuthModel
-import okhttp3.Cookie
 
 interface AuthRepository {
 

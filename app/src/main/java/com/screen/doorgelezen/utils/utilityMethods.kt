@@ -13,7 +13,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.screen.doorgelezen.R
 import com.screen.doorgelezen.data.CookieJar
 
 fun printDebug(value:String){
@@ -47,22 +49,22 @@ fun LogoutDialog(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                Icon(Icons.Default.Logout, "Logout")
-                Text("Logout")
+                Icon(Icons.Default.Logout, stringResource(id = R.string.log_out))
+                Text(stringResource(id = R.string.log_out))
             }
         },
-        text = { Text("Are you sure you want to logout of your account ?") },
+        text = { Text(stringResource(id = R.string.log_out_confirm)) },
         onDismissRequest = {
             onCancel()
         },
         confirmButton = {
             TextButton({onConfirm()}) {
-                Text("Logout")
+                Text(stringResource(id = R.string.log_out))
             }
         },
         dismissButton = {
             TextButton({onCancel()}) {
-                Text("Cancel")
+                Text(stringResource(R.string.cancel))
             }
         },
     )

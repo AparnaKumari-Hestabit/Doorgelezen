@@ -1,17 +1,9 @@
 package com.screen.doorgelezen.screens.scanner
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
+
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DocumentScanner
 import androidx.compose.material.icons.filled.Logout
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -78,7 +70,7 @@ fun ScannerHome(
                     IconButton({
                         showLogoutAlert = true
                     }) {
-                        Icon(Icons.Default.Logout, "Logout", tint = Color.White)
+                        Icon(Icons.Default.Logout, stringResource(id = R.string.log_out), tint = Color.White)
                     }
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
@@ -88,7 +80,7 @@ fun ScannerHome(
         })
     { paddingValues ->
 
-        ScannerNavigator(modifier = Modifier.padding(paddingValues), catalogViewModel = viewModel)
+        ScannerNavigator(modifier = Modifier.padding(paddingValues), catalogViewModel = viewModel, snackbarHostState = snackbarHostState)
 
         if (showLogoutAlert) {
             LogoutDialog(onCancel = {
@@ -98,7 +90,7 @@ fun ScannerHome(
                 authViewModel.logout { message ->
                     coroutineScope.launch {
                         snackbarHostState.showSnackbar(
-                            message = message ?: "Something went wrong",
+                            message = message ?: "Er ging iets mis, probeer het later opnieuw.",
                             duration = SnackbarDuration.Short
                         )
                     }

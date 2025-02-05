@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,11 +18,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -32,18 +30,17 @@ import com.screen.doorgelezen.data.models.BolProduct
 import com.screen.doorgelezen.R
 import com.screen.doorgelezen.data.repository.CatalogRepository.Companion.selectedProduct
 import com.screen.doorgelezen.utils.printDebug
-import java.util.UUID
 
 
 @Composable
-fun SearchResultListItem(product: BolProduct, onClick: () -> Unit) {
+fun SearchResultListItem(modifier: Modifier = Modifier,product: BolProduct, onClick: () -> Unit) {
 
     val mediumImageUrl = product.assets
         .find { it.key == "medium" }
         ?.url
 
     Row(
-        modifier = Modifier
+        modifier = modifier
             .clickable {
                 selectedProduct = product
                 onClick()
@@ -84,6 +81,8 @@ fun SearchResultListItem(product: BolProduct, onClick: () -> Unit) {
                 .build(),
             contentDescription = stringResource(R.string.cover_image),
             contentScale = ContentScale.Crop,
+            fallback = painterResource(id = R.drawable.bibliophile),
+            placeholder = painterResource(id = R.drawable.bibliophile),
             modifier = Modifier
                 .size(width = 120.dp, height = 160.dp)
                 .padding(

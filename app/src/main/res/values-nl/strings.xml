@@ -2,6 +2,7 @@
 <resources>
     <string name="app_name">Doorgelezen</string>
     <string name="invalid_credentials_error">Incorrect e-mailadres en/of wachtwoord.</string>
+    <string name="credentials_error">Controleer uw gegevens of probeer het later opnieuw!</string>
     <string name="invalid_email_address">Ongeldig e-mailadres.</string>
     <string name="woman_reading_book">Een vrouw die een boek leest.</string>
     <string name="email_address">E-mailadres</string>
@@ -87,4 +88,10 @@
         <item quantity="one">%1$d boek beschikbaar</item>
         <item quantity="other">%1$d boeken beschikbaar</item>
     </plurals>
+
+    <string name="BACK_ONLINE">Terug online</string>
+    <string name="INTERNET_CONNECTION_LOST">Verbinding verbroken</string>
+    <string name="LOSING_INTERNET_CONNECTION">Lage internetverbinding</string>
+    <string name="NO_INTERNET_CONNECTION">Geen internetverbinding</string>
+    <string name="logout_error">Fout bij uitloggen gebruiker!</string>
 </resources>

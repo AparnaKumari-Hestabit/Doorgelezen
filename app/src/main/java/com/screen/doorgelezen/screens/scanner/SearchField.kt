@@ -1,6 +1,6 @@
 package com.screen.doorgelezen.screens.scanner
 
-import android.hardware.lights.Light
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -15,8 +15,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TextFieldDefaults.textFieldWithoutLabelPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -29,10 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.screen.doorgelezen.R
-import com.screen.doorgelezen.ui.theme.darkestGray
-import com.screen.doorgelezen.ui.theme.green
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -50,10 +45,12 @@ fun SearchField(
     BasicTextField(
         value = query,
         onValueChange = onSearch,
-        modifier = modifier.background(
-            color = MaterialTheme.colorScheme.primaryContainer,
-            shape = RoundedCornerShape(inputCornerRadius)
-        ).clip(RoundedCornerShape(inputCornerRadius)),
+        modifier = modifier
+            .background(
+                color = MaterialTheme.colorScheme.primaryContainer,
+                shape = RoundedCornerShape(inputCornerRadius)
+            )
+            .clip(RoundedCornerShape(inputCornerRadius)),
         singleLine = true,
         enabled = true,
         interactionSource = interactionSource,
@@ -75,7 +72,7 @@ fun SearchField(
                 IconButton(onClick = {
                     onClose()
                 }) {
-                    Icon(Icons.Filled.Clear, "Close", tint = Color.LightGray)
+                    Icon(Icons.Filled.Clear, stringResource(id = R.string.close_menu), tint = Color.LightGray)
                 }
             },
             placeholder = { Text(placeholder, color = Color.LightGray) },

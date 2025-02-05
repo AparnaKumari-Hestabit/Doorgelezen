@@ -17,8 +17,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.screen.doorgelezen.R
 import com.screen.doorgelezen.data.models.BolProduct
-import java.util.UUID
-import com.screen.doorgelezen.utils.printDebug
 
 @Composable
 fun SearchListing(results: List<BolProduct>, onNavigate: () -> Unit) {
@@ -28,6 +26,7 @@ fun SearchListing(results: List<BolProduct>, onNavigate: () -> Unit) {
     } else {
         stringResource(R.string.first_results, results.size)
     }
+
 
     Box(
         modifier = Modifier
@@ -52,7 +51,7 @@ fun SearchListing(results: List<BolProduct>, onNavigate: () -> Unit) {
                         thickness = 1.dp,
                         modifier = Modifier.padding(vertical = 2.dp)
                     )
-                    SearchResultListItem(product = results[index],
+                    SearchResultListItem(modifier = Modifier.weight(1/4f), product = results[index],
                         onClick =
                             onNavigate
                     )

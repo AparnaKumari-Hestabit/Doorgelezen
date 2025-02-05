@@ -1,8 +1,7 @@
 package com.screen.doorgelezen.screens.Authentication
 
+import android.annotation.SuppressLint
 import android.widget.Toast
-import androidx.activity.compose.BackHandler
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -46,6 +45,7 @@ import com.screen.doorgelezen.utils.raiseToast
 import com.screen.doorgelezen.viewModels.AuthViewModel
 import kotlinx.coroutines.launch
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun AuthenticationScreen(onNavigate: (AppScreens) -> Unit) {
 
@@ -54,7 +54,6 @@ fun AuthenticationScreen(onNavigate: (AppScreens) -> Unit) {
     val extraLargePadding = dimensionResource(R.dimen.padding_extra_large)
     val paddingMedium = dimensionResource(R.dimen.padding_medium)
     val paddingSmall = dimensionResource(R.dimen.padding_small)
-    val paddingExtraSmall = dimensionResource(R.dimen.padding_extra_small)
     val buttonHeight = dimensionResource(R.dimen.button_height)
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
@@ -80,14 +79,14 @@ fun AuthenticationScreen(onNavigate: (AppScreens) -> Unit) {
     val focusManager = LocalFocusManager.current
     val submitWrapper = {
         if(mIsConnected) {
-            viewModel.login(AuthModel(email, password), {
+            viewModel.login(AuthModel(email, password)) {
                 coroutineScope.launch {
                     snackbarHostState.showSnackbar(
-                        message = "Check your credentials or try again later!",
+                        message = _context.getString(R.string.credentials_error),
                         duration = SnackbarDuration.Short
                     )
                 }
-            })
+            }
         }else{
             raiseToast(_context, _context.getString(R.string.NO_INTERNET_CONNECTION), Toast.LENGTH_SHORT)
         }
@@ -180,7 +179,6 @@ fun AuthenticationScreen(onNavigate: (AppScreens) -> Unit) {
                         }
                     }
                 }
-
             }
         }
     }

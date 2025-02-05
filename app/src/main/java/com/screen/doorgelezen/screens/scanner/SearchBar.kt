@@ -16,9 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -27,6 +25,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import com.screen.doorgelezen.R
+import com.screen.doorgelezen.utils.printDebug
 import com.screen.doorgelezen.viewModels.CatalogViewModel
 
 @Composable
@@ -49,9 +48,10 @@ fun SearchBar(
             query = query,
             onSearch = { newQuery ->
                 viewModel.setQuery(newQuery)
-                if (query.isNotBlank()) {
-                    search(query)
-                }
+                printDebug("query: $newQuery")
+//                if (newQuery.isNotBlank()) {
+//                    search(newQuery)
+//                }
             },
             modifier = Modifier
                 .fillMaxSize()
@@ -63,6 +63,7 @@ fun SearchBar(
                 viewModel.setQuery()
             },
             keyboardActions = KeyboardActions(onDone = {
+                printDebug("query2: $query")
                 if (query.isNotBlank()) {
                     search(query)
                 }
