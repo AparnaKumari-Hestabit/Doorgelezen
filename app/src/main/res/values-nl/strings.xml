@@ -94,4 +94,5 @@
     <string name="LOSING_INTERNET_CONNECTION">Lage internetverbinding</string>
     <string name="NO_INTERNET_CONNECTION">Geen internetverbinding</string>
     <string name="logout_error">Fout bij uitloggen gebruiker!</string>
+    <string name="BACK_PRESS_MSG">Druk nogmaals op Terug om af te sluiten.</string>
 </resources>

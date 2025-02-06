@@ -7,10 +7,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
@@ -31,53 +33,64 @@ fun ScanConditionPicker(
     val paddingExtraLarge = dimensionResource(R.dimen.padding_large)
     val context = LocalContext.current
 
-    Column(
-        Modifier
-            .fillMaxWidth()
-            .padding(10.dp)
-    ) {
-        Text(
-            stringResource(R.string.cheapest_bol_offers),
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.SemiBold,
-            modifier = Modifier.padding(bottom = smallPadding),
-            fontSize = 19.sp
+    Column {
+
+        HorizontalDivider(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = smallPadding),
+            color = Color.LightGray
         )
 
-        if (calculated?.asNewCondition == null || calculated.goodCondition==null || calculated.newCondition==null || (calculated.asNewCondition.maxBid == 0.0 && calculated.goodCondition.maxBid == 0.0 && calculated.newCondition.maxBid == 0.0)) {
-            //no offer available
-            Text(modifier = Modifier.padding(vertical = paddingExtraLarge),
-                text = stringResource(R.string.no_bol_offers) + "\n" + stringResource(R.string.no_bol_offers_msg),
-                textAlign = TextAlign.Center,
-                fontWeight = FontWeight.W400,
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .padding(10.dp)
+        ) {
+            Text(
+                stringResource(R.string.cheapest_bol_offers),
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.padding(bottom = smallPadding),
                 fontSize = 19.sp
             )
-        } else {
-            val conditionList = getConditionList(calculated, context)
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = smallPadding),
-                horizontalArrangement = Arrangement.End
-            ) {
+            if (calculated?.asNewCondition == null || calculated.goodCondition == null || calculated.newCondition == null || (calculated.asNewCondition.maxBid == 0.0 && calculated.goodCondition.maxBid == 0.0 && calculated.newCondition.maxBid == 0.0)) {
+                //no offer available
                 Text(
-                    text = stringResource(id = R.string.max_bid),
-                    style = MaterialTheme.typography.bodySmall,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 14.sp
+                    modifier = Modifier.padding(vertical = paddingExtraLarge),
+                    text = stringResource(R.string.no_bol_offers) + "\n" + stringResource(R.string.no_bol_offers_msg),
+                    textAlign = TextAlign.Center,
+                    fontWeight = FontWeight.W400,
+                    fontSize = 19.sp
                 )
-            }
-            //offer available
-            LazyColumn {
-                items(conditionList) { (condition, priceDetails) ->
-                    ConditionItem(
-                        condition = condition,
-                        priceDetails = priceDetails,
-                        soldByBol = soldByBol,
-                        isFirst = condition == context.getString(R.string.new_),
-                        isDividerVisible = conditionList.size > 1
+            } else {
+                val conditionList = getConditionList(calculated, context)
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = smallPadding),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.max_bid),
+                        style = MaterialTheme.typography.bodySmall,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 14.sp
                     )
+                }
+                //offer available
+                LazyColumn {
+                    items(conditionList) { (condition, priceDetails) ->
+                        ConditionItem(
+                            condition = condition,
+                            priceDetails = priceDetails,
+                            soldByBol = soldByBol,
+                            isFirst = condition == context.getString(R.string.new_),
+                            isDividerVisible = conditionList.size > 1
+                        )
+                    }
                 }
             }
         }

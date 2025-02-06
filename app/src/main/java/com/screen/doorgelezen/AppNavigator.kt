@@ -1,6 +1,7 @@
 package com.screen.doorgelezen
 
 import android.app.Activity
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.SnackbarHostState
@@ -27,9 +28,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import com.screen.doorgelezen.utils.printDebug
+import com.screen.doorgelezen.utils.raiseToast
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
@@ -101,26 +105,54 @@ fun ScannerNavigator(modifier: Modifier, catalogViewModel: CatalogViewModel, sna
     val scannerNavController = rememberNavController()
 
     val isSearching by catalogViewModel.isSearching.collectAsState()
+    val coroutineScope = rememberCoroutineScope()
+
 
     if (isSearching){
         if(scannerNavController.currentBackStackEntry?.destination?.route ?: SCANNER_SCREEN.route == SCAN_CONTENT.route){
+            catalogViewModel.setScanned(false)
             scannerNavController.popBackStack()
+            coroutineScope.launch {
+                delay(1000)
+                catalogViewModel.updateSelectedCatalog(null)
+            }
         }
         catalogViewModel.clearCatalog()
     }
 
     val focusManager = LocalFocusManager.current
     val context = LocalContext.current as Activity
+    var backCounter by remember {
+        mutableStateOf(false)
+    }
+
+    var canNavigate = true
 
     BackHandler {
         if(scannerNavController.currentBackStackEntry?.destination?.route ?: SCANNER_SCREEN.route == SCAN_CONTENT.route){
+            catalogViewModel.setScanned(false)
             scannerNavController.popBackStack()
+            canNavigate = false
+            coroutineScope.launch {
+                delay(500)
+                catalogViewModel.updateSelectedCatalog(null)
+                canNavigate = true
+            }
         }else if(catalogViewModel.catalogResults.value.isNotEmpty()){
             catalogViewModel.setQuery()
             catalogViewModel.setSearching(false)
             catalogViewModel.clearCatalog()
         }else{
-            context.finish()
+            if (!backCounter) {
+                backCounter = true
+                raiseToast(context, context.getString(R.string.BACK_PRESS_MSG), Toast.LENGTH_SHORT)
+            } else {
+                context.finish()
+            }
+            coroutineScope.launch {
+                delay(2000)
+                backCounter = false
+            }
         }
     }
 
@@ -132,11 +164,18 @@ fun ScannerNavigator(modifier: Modifier, catalogViewModel: CatalogViewModel, sna
         composable(route = SCANNER_SCREEN.route) {
             ScannerScreen(viewModel = catalogViewModel,
                 onNavigateToContent = { selectedProduct ->
-                    focusManager.clearFocus()
-                    catalogViewModel.setQuery()
-                    catalogViewModel.setSearching(false)
-                    catalogViewModel.updateSelectedCatalog(selectedProduct)
-                    scannerNavController.navigate(SCAN_CONTENT.route)
+                    if(canNavigate) {
+                        canNavigate = false
+                        focusManager.clearFocus()
+                        catalogViewModel.setQuery()
+                        catalogViewModel.setSearching(false)
+                        catalogViewModel.updateSelectedCatalog(selectedProduct)
+                        scannerNavController.navigate(SCAN_CONTENT.route)
+                        coroutineScope.launch {
+                            delay(500)
+                            canNavigate = true
+                        }
+                    }
                 },
                 snackbarHostState = snackbarHostState
             )

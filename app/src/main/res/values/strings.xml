@@ -96,4 +96,6 @@
     <string name="LOSING_INTERNET_CONNECTION">Low internet connectivity</string>
     <string name="NO_INTERNET_CONNECTION">No internet connection</string>
     <string name="logout_error">Error logging out user!</string>
+    <string name="BACK_PRESS_MSG">Press back again to exit.</string>
+
 </resources>

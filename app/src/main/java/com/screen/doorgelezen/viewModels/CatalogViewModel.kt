@@ -44,7 +44,7 @@ class CatalogViewModel @Inject constructor(
         _searchQuery.value = query
     }
 
-    fun updateSelectedCatalog(newCatalog:BolProduct){
+    fun updateSelectedCatalog(newCatalog:BolProduct?){
         _selectedCatalog.value = newCatalog
     }
 
@@ -58,6 +58,10 @@ class CatalogViewModel @Inject constructor(
 
     fun setSearching(searching:Boolean){
         _isSearching.value = searching
+    }
+
+    fun setScanned(newState: Boolean){
+        _isScanned.value = newState
     }
 
     fun search(query: String, isScanned: Boolean = false) = viewModelScope.launch {

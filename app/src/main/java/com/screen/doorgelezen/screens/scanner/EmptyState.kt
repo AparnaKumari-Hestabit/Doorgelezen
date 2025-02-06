@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import com.screen.doorgelezen.R
 
@@ -29,7 +30,8 @@ fun EmptyState(
         Text(
             message,
             modifier = Modifier.padding(top = paddingExtraLarge),
-            style = MaterialTheme.typography.titleLarge
+            style = MaterialTheme.typography.titleLarge,
+            textAlign = TextAlign.Center,
         )
     }
 }

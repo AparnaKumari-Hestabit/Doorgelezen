@@ -35,7 +35,7 @@ import com.screen.doorgelezen.viewModels.CatalogViewModel
 
 @Composable
 fun SearchBar(
-    search: (String) -> Unit,
+    search: (String, Boolean) -> Unit,
     viewModel: CatalogViewModel
 ) {
     val paddingExtraSmall = dimensionResource(R.dimen.padding_small)
@@ -59,7 +59,8 @@ fun SearchBar(
             query = query,
             onSearch = { newQuery ->
                 viewModel.setQuery(newQuery)
-                printDebug("query: $newQuery")
+                viewModel.clearCatalog()
+//                printDebug("query: $newQuery")
 //                if (newQuery.isNotBlank()) {
 //                    search(newQuery)
 //                }
@@ -77,7 +78,7 @@ fun SearchBar(
             keyboardActions = KeyboardActions(onSearch = {
                 printDebug("query2: $query")
                 if (query.isNotBlank()) {
-                    search(query)
+                    search(query, false)
                 }
                 focusManager.clearFocus()
             })

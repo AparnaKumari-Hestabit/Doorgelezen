@@ -87,6 +87,7 @@ fun ScannerScreen(
         if(isScanned){
             if(selectedCatalog != null){
                 onNavigateToContent(selectedCatalog!!)
+                viewModel.setScanned(false)
             }
         }else {
             if (catalogResults.isEmpty()) {

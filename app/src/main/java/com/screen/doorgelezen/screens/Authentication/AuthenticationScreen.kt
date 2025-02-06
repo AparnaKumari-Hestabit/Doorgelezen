@@ -1,7 +1,9 @@
 package com.screen.doorgelezen.screens.Authentication
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -44,6 +46,7 @@ import com.screen.doorgelezen.data.repository.Resource
 import com.screen.doorgelezen.utils.isValidEmail
 import com.screen.doorgelezen.utils.raiseToast
 import com.screen.doorgelezen.viewModels.AuthViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -77,6 +80,12 @@ fun AuthenticationScreen(onNavigate: (AppScreens) -> Unit) {
     }
     val _context = LocalContext.current
 
+    var backCounter by remember {
+        mutableStateOf(false)
+    }
+
+    val context = LocalContext.current
+
     val focusManager = LocalFocusManager.current
     val submitWrapper = {
         if(mIsConnected) {
@@ -92,6 +101,19 @@ fun AuthenticationScreen(onNavigate: (AppScreens) -> Unit) {
             raiseToast(_context, _context.getString(R.string.NO_INTERNET_CONNECTION), Toast.LENGTH_SHORT)
         }
         focusManager.clearFocus()
+    }
+
+    BackHandler {
+        if (!backCounter) {
+            backCounter = true
+            raiseToast(context, context.getString(R.string.BACK_PRESS_MSG), Toast.LENGTH_SHORT)
+        } else {
+            (context as Activity).finish()
+        }
+        coroutineScope.launch {
+            delay(2000)
+            backCounter = false
+        }
     }
 
     Scaffold(

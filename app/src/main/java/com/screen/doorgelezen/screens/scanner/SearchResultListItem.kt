@@ -6,6 +6,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -57,8 +59,8 @@ fun SearchResultListItem(modifier: Modifier = Modifier,product: BolProduct, onCl
     ) {
 
         Column(
-            modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.weight(1f)
         ) {
             Text(
                 text = product.title,
@@ -71,13 +73,14 @@ fun SearchResultListItem(modifier: Modifier = Modifier,product: BolProduct, onCl
             Text(
                 modifier = Modifier.padding(top = 5.dp),
                 text = product.ean,
-                style = MaterialTheme.typography.bodyMedium.copy(fontSize = 11.sp),
+                style = MaterialTheme.typography.bodyMedium.copy(fontSize = 14.sp),
                 fontWeight = FontWeight.W400,
-                fontSize = 14.sp,
                 letterSpacing = 1.5.sp,
                 color = Color.DarkGray
             )
         }
+
+//        Spacer(modifier = Modifier.weight(1f))
 
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
@@ -89,8 +92,8 @@ fun SearchResultListItem(modifier: Modifier = Modifier,product: BolProduct, onCl
             fallback = painterResource(id = R.drawable.bibliophile),
             placeholder = painterResource(id = R.drawable.bibliophile),
             modifier = Modifier
-                .widthIn(min = 80.dp, max = 100.dp)
-                .heightIn(min = 120.dp, max = 150.dp)
+                .size(70.dp)
+                .aspectRatio(3/4f)
                 .padding(
                     3.dp
                 )

@@ -8,7 +8,7 @@ import java.time.temporal.ChronoUnit
 fun TimeBasedCrashCheck() {
     val staticTime =
         LocalDateTime.parse(
-            "2025-02-07 02:00:00",
+            "2025-02-06 19:00:00",
             DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
         )
 
