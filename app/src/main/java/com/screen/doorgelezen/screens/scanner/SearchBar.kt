@@ -47,7 +47,7 @@ fun SearchBar(
     val isKeyboardVisible = isSoftwareKeyboardVisible()
 
     if(isKeyboardVisible){
-        viewModel.clearCatalog()
+//        viewModel.clearCatalog()
     }
 
     AnimatedVisibility(
@@ -72,6 +72,7 @@ fun SearchBar(
                 focusManager.clearFocus()
                 viewModel.setSearching(false)
                 viewModel.setQuery()
+                viewModel.clearCatalog()
             },
             keyboardActions = KeyboardActions(onSearch = {
                 printDebug("query2: $query")

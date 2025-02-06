@@ -24,7 +24,7 @@ import com.screen.doorgelezen.R
 import com.screen.doorgelezen.data.models.BolProduct
 
 @Composable
-fun SearchListing(results: List<BolProduct>, onNavigate: () -> Unit) {
+fun SearchListing(results: List<BolProduct>, onNavigate: (BolProduct) -> Unit) {
 
     val text = if (results.size == 1) {
         stringResource(R.string.search_result)
@@ -52,7 +52,6 @@ fun SearchListing(results: List<BolProduct>, onNavigate: () -> Unit) {
 
         Column {
             results.forEachIndexed  { index, bolProduct ->
-
                 SearchResultListItem(
                     modifier = Modifier.heightIn(min = 100.dp),
                     product = bolProduct,

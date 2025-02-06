@@ -43,7 +43,7 @@ fun ScannerHome(
     onLogout: () -> Unit
 ) {
 
-    ScanDataReceiver(stringResource(R.string.scan_intent_action), viewModel::search)
+//    ScanDataReceiver(stringResource(R.string.scan_intent_action), viewModel::search)
 
     var showLogoutAlert by remember { mutableStateOf(false) }
     val snackbarHostState = remember { SnackbarHostState() }

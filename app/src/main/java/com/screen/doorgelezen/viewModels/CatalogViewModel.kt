@@ -19,6 +19,9 @@ class CatalogViewModel @Inject constructor(
     private val catalogRepository: CatalogRepository
 ) : ViewModel() {
 
+    private val _selectedCatalog = MutableStateFlow<BolProduct?>(null)
+    val selectedCatalog = _selectedCatalog.asStateFlow()
+
     private val _catalogResults = MutableStateFlow<List<BolProduct>>(emptyList())
     val catalogResults: StateFlow<List<BolProduct>> = _catalogResults
 
@@ -34,8 +37,15 @@ class CatalogViewModel @Inject constructor(
     private val _searchQuery = MutableStateFlow("")
     val searchQuery = _searchQuery.asStateFlow()
 
+    private val _isScanned = MutableStateFlow<Boolean>(false)
+    val isScanned = _isScanned.asStateFlow()
+
     fun setQuery(query: String = ""){
         _searchQuery.value = query
+    }
+
+    fun updateSelectedCatalog(newCatalog:BolProduct){
+        _selectedCatalog.value = newCatalog
     }
 
     fun clearErrorState(){
@@ -50,8 +60,9 @@ class CatalogViewModel @Inject constructor(
         _isSearching.value = searching
     }
 
-    fun search(query: String) = viewModelScope.launch {
+    fun search(query: String, isScanned: Boolean = false) = viewModelScope.launch {
         try {
+            _isScanned.value = isScanned
             _isLoading.value = true
             val response = catalogRepository.searchCatalog(query)
             response.let {
@@ -65,7 +76,11 @@ class CatalogViewModel @Inject constructor(
                     }
                     is Resource.Success -> {
                         _isLoading.value = false
-                        _catalogResults.value = it.result.results
+                        if(isScanned){
+                            _selectedCatalog.value = it.result.results.firstOrNull()
+                        }else {
+                            _catalogResults.value = it.result.results
+                        }
                     }
                 }
             }

@@ -20,7 +20,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.Doorgelezen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

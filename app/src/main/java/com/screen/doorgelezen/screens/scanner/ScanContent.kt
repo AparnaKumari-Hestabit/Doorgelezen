@@ -12,6 +12,8 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,7 +32,6 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.screen.doorgelezen.R
-import com.screen.doorgelezen.data.repository.CatalogRepository.Companion.selectedProduct
 import com.screen.doorgelezen.utils.printDebug
 import com.screen.doorgelezen.viewModels.CatalogViewModel
 
@@ -40,7 +41,7 @@ fun ScanContent(viewModel: CatalogViewModel) {
     val mediumPadding = dimensionResource(R.dimen.padding_medium)
     val coverHeight = dimensionResource(R.dimen.scan_cover_height)
 
-    val product = selectedProduct!!
+    val product = viewModel.selectedCatalog.collectAsState().value!!
 
     val dbResultsText = if (product.dbResults.isNullOrEmpty()) {
         buildAnnotatedString {

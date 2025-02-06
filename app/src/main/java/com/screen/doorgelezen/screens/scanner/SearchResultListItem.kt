@@ -35,12 +35,11 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.screen.doorgelezen.data.models.BolProduct
 import com.screen.doorgelezen.R
-import com.screen.doorgelezen.data.repository.CatalogRepository.Companion.selectedProduct
 import com.screen.doorgelezen.utils.printDebug
 
 
 @Composable
-fun SearchResultListItem(modifier: Modifier = Modifier,product: BolProduct, onClick: () -> Unit) {
+fun SearchResultListItem(modifier: Modifier = Modifier,product: BolProduct, onClick: (BolProduct) -> Unit) {
 
     val mediumImageUrl = product.assets
         .find { it.key == "medium" }
@@ -49,8 +48,7 @@ fun SearchResultListItem(modifier: Modifier = Modifier,product: BolProduct, onCl
     Row(
         modifier = modifier
             .clickable {
-                selectedProduct = product
-                onClick()
+                onClick(product)
             }
             .fillMaxWidth()
             .padding(vertical = 8.dp, horizontal = 16.dp),

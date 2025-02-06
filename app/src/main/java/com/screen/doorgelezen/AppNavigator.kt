@@ -131,10 +131,11 @@ fun ScannerNavigator(modifier: Modifier, catalogViewModel: CatalogViewModel, sna
 
         composable(route = SCANNER_SCREEN.route) {
             ScannerScreen(viewModel = catalogViewModel,
-                onNavigateToContent = {
+                onNavigateToContent = { selectedProduct ->
                     focusManager.clearFocus()
                     catalogViewModel.setQuery()
                     catalogViewModel.setSearching(false)
+                    catalogViewModel.updateSelectedCatalog(selectedProduct)
                     scannerNavController.navigate(SCAN_CONTENT.route)
                 },
                 snackbarHostState = snackbarHostState

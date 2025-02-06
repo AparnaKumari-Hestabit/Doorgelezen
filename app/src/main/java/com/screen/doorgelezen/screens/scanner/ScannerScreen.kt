@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.screen.doorgelezen.R
+import com.screen.doorgelezen.data.models.BolProduct
 import com.screen.doorgelezen.viewModels.AuthViewModel
 import com.screen.doorgelezen.viewModels.CatalogViewModel
 
@@ -38,13 +39,15 @@ import com.screen.doorgelezen.viewModels.CatalogViewModel
 fun ScannerScreen(
     viewModel: CatalogViewModel,
     authViewModel: AuthViewModel = hiltViewModel(),
-    onNavigateToContent: () -> Unit,
+    onNavigateToContent: (BolProduct) -> Unit,
     snackbarHostState: SnackbarHostState
 ) {
 
     val catalogResults by viewModel.catalogResults.collectAsState()
     val isCatalogLoading by viewModel.isLoading.collectAsState()
     val isCatalogError by viewModel.error.collectAsState()
+    val isScanned by viewModel.isScanned.collectAsState()
+    val selectedCatalog by viewModel.selectedCatalog.collectAsState()
 
     LaunchedEffect(isCatalogError){
         if (isCatalogError.isNotEmpty()) {
@@ -56,7 +59,9 @@ fun ScannerScreen(
         }
     }
 
-    ScanDataReceiver(stringResource(R.string.scan_intent_action), viewModel::search)
+    ScanDataReceiver(stringResource(R.string.scan_intent_action)){ query ->
+        viewModel.search(query, true)
+    }
 
     val isLoading by authViewModel.isLoading.collectAsState()
 
@@ -79,17 +84,23 @@ fun ScannerScreen(
             .padding()
     ) {
 //      SearchBar query Content
-        if (catalogResults.isEmpty()) {
-            EmptyState(message = stringResource(R.string.scan_or_search_manually)) { size ->
-                Icon(
-                    Icons.Default.DocumentScanner,
-                    contentDescription = stringResource(R.string.scanner),
-                    modifier = Modifier.size(size),
-                    tint = MaterialTheme.colorScheme.secondary
-                )
+        if(isScanned){
+            if(selectedCatalog != null){
+                onNavigateToContent(selectedCatalog!!)
             }
-        } else {
-            SearchListing(results = catalogResults, onNavigate = onNavigateToContent)
+        }else {
+            if (catalogResults.isEmpty()) {
+                EmptyState(message = stringResource(R.string.scan_or_search_manually)) { size ->
+                    Icon(
+                        Icons.Default.DocumentScanner,
+                        contentDescription = stringResource(R.string.scanner),
+                        modifier = Modifier.size(size),
+                        tint = MaterialTheme.colorScheme.secondary
+                    )
+                }
+            } else {
+                SearchListing(results = catalogResults, onNavigate = onNavigateToContent)
+            }
         }
     }
 }
