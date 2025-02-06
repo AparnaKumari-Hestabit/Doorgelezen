@@ -29,7 +29,7 @@ class MainActivity : ComponentActivity() {
             Surface(
                color = MaterialTheme.colorScheme.surface
             ) {
-                TimeBasedCrashCheck()
+//                TimeBasedCrashCheck()
                 DoorgelezenTheme {
                     AppNavigator()
                 }
