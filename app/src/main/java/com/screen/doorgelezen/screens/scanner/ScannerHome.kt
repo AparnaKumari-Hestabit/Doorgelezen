@@ -48,6 +48,8 @@ fun ScannerHome(
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
     val logoutFlow by authViewModel.loginFlow.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
+
     logoutFlow.let {
         when (it) {
             is Resource.Success -> {
@@ -68,9 +70,15 @@ fun ScannerHome(
                 actions = {
                     SearchBar(search = viewModel::search, viewModel)
                     IconButton({
-                        showLogoutAlert = true
+                        if (!isLoading) {
+                            showLogoutAlert = true
+                        }
                     }) {
-                        Icon(Icons.Default.Logout, stringResource(id = R.string.log_out), tint = Color.White)
+                        Icon(
+                            Icons.Default.Logout,
+                            stringResource(id = R.string.log_out),
+                            tint = Color.White
+                        )
                     }
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(

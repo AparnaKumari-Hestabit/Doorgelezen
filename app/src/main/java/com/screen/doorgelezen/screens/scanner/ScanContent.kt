@@ -1,5 +1,8 @@
 package com.screen.doorgelezen.screens.scanner
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.snapping.SnapPosition
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -31,6 +35,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.screen.doorgelezen.R
@@ -46,6 +51,8 @@ fun ScanContent(viewModel: CatalogViewModel) {
     val mediumPadding = dimensionResource(R.dimen.padding_medium)
 
     val product = viewModel.selectedCatalog.collectAsState().value!!
+
+    val isLoading by viewModel.isLoading.collectAsState()
 
     viewModel.setScanned(false)
 
@@ -79,11 +86,24 @@ fun ScanContent(viewModel: CatalogViewModel) {
         .find { it.key == "medium" }
         ?.url
 
+    if (isLoading) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = Color.Black.copy(0.5f))
+                .zIndex(2f)
+                .clickable(enabled = false) {}, contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator(color = Color.White)
+        }
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
             .padding(mediumPadding)
     ) {
+
         Column(
             modifier = Modifier
                 .fillMaxSize()

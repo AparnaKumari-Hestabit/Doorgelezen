@@ -59,9 +59,9 @@ fun ScannerScreen(
         }
     }
 
-    ScanDataReceiver(stringResource(R.string.scan_intent_action)){ query ->
-        viewModel.search(query, true)
-    }
+//    ScanDataReceiver(stringResource(R.string.scan_intent_action)){ query ->
+//        viewModel.search(query, true)
+//    }
 
     val isLoading by authViewModel.isLoading.collectAsState()
 

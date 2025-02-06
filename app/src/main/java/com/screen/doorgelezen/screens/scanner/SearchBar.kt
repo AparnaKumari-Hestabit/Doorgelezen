@@ -43,16 +43,23 @@ fun SearchBar(
     val focusRequester = remember { FocusRequester() }
     val query by viewModel.searchQuery.collectAsState()
     val searching by viewModel.isSearching.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
 
     val isKeyboardVisible = isSoftwareKeyboardVisible()
 
-    if(isKeyboardVisible){
+    if (isKeyboardVisible) {
 //        viewModel.clearCatalog()
     }
 
     AnimatedVisibility(
         searching,
-        enter = fadeIn(animationSpec = tween(durationMillis = 100, delayMillis = 100, easing = EaseInOutQuad)),
+        enter = fadeIn(
+            animationSpec = tween(
+                durationMillis = 100,
+                delayMillis = 100,
+                easing = EaseInOutQuad
+            )
+        ),
         exit = fadeOut(animationSpec = tween(durationMillis = 100, easing = EaseInOutQuad))
     ) {
         SearchField(
@@ -70,10 +77,12 @@ fun SearchBar(
                 .padding(paddingExtraSmall)
                 .focusRequester(focusRequester),
             onClose = {
-                focusManager.clearFocus()
-                viewModel.setSearching(false)
-                viewModel.setQuery()
-                viewModel.clearCatalog()
+                if (!isLoading) {
+                    focusManager.clearFocus()
+                    viewModel.setSearching(false)
+                    viewModel.setQuery()
+                    viewModel.clearCatalog()
+                }
             },
             keyboardActions = KeyboardActions(onSearch = {
                 printDebug("query2: $query")
@@ -84,7 +93,7 @@ fun SearchBar(
             })
         )
         LaunchedEffect(searching) {
-            if(searching) {
+            if (searching) {
                 focusRequester.requestFocus()
             }
         }
@@ -92,11 +101,19 @@ fun SearchBar(
 
     AnimatedVisibility(
         !searching,
-        enter = fadeIn(animationSpec = tween(durationMillis = 100, delayMillis = 100, easing = EaseInOutQuad)),
+        enter = fadeIn(
+            animationSpec = tween(
+                durationMillis = 100,
+                delayMillis = 100,
+                easing = EaseInOutQuad
+            )
+        ),
         exit = fadeOut(animationSpec = tween(durationMillis = 100, easing = EaseInOutQuad))
     ) {
         IconButton(onClick = {
-            viewModel.setSearching(true)
+            if (!isLoading) {
+                viewModel.setSearching(true)
+            }
         }) {
             Icon(
                 Icons.Filled.Search,
@@ -119,7 +136,8 @@ fun isSoftwareKeyboardVisible(): Boolean {
             rootView.getWindowVisibleDisplayFrame(rect)
             val screenHeight = rootView.height
             val keypadHeight = screenHeight - rect.bottom
-            isKeyboardVisible = keypadHeight > screenHeight * 0.15 // Keyboard is considered visible if height is significant
+            isKeyboardVisible =
+                keypadHeight > screenHeight * 0.15 // Keyboard is considered visible if height is significant
         }
 
         rootView.viewTreeObserver.addOnGlobalLayoutListener(listener)

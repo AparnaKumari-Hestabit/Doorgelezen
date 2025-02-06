@@ -30,6 +30,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.res.stringResource
+import com.screen.doorgelezen.screens.scanner.ScanDataReceiver
 import com.screen.doorgelezen.utils.printDebug
 import com.screen.doorgelezen.utils.raiseToast
 import kotlinx.coroutines.delay
@@ -124,6 +126,10 @@ fun ScannerNavigator(modifier: Modifier, catalogViewModel: CatalogViewModel, sna
     val context = LocalContext.current as Activity
     var backCounter by remember {
         mutableStateOf(false)
+    }
+
+    ScanDataReceiver(stringResource(R.string.scan_intent_action)){ query ->
+        catalogViewModel.search(query, true)
     }
 
     var canNavigate = true
