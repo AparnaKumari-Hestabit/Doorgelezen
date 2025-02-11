@@ -194,4 +194,3 @@ fun ScannerNavigator(modifier: Modifier, catalogViewModel: CatalogViewModel, sna
         }
     }
 }
-

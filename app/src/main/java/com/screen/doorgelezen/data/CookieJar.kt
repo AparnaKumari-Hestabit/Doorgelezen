@@ -2,6 +2,7 @@ package com.screen.doorgelezen.data
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.security.crypto.EncryptedSharedPreferences
 
 class CookieJar(
@@ -25,17 +26,20 @@ class CookieJar(
 
     companion object {
         private const val PREFERENCE_KEY = "cookies"
-
         fun createWithEncryptedPreferences(context: Context): CookieJar {
-            return CookieJar(
-                EncryptedSharedPreferences.create(
-                    "cookies",
-                    "cookies_key",
-                    context,
-                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+            return try {
+                CookieJar(
+                    EncryptedSharedPreferences.create(
+                        "cookies",
+                        "cookies_key",
+                        context,
+                        EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                        EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+                    )
                 )
-            )
+            } catch (e: Exception) {
+                CookieJar(context.getSharedPreferences("cookies", Context.MODE_PRIVATE))
+            }
         }
     }
 }
