@@ -86,17 +86,17 @@ fun ScanContent(viewModel: CatalogViewModel) {
         .find { it.key == "medium" }
         ?.url
 
-    if (isLoading) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = Color.Black.copy(0.5f))
-                .zIndex(2f)
-                .clickable(enabled = false) {}, contentAlignment = Alignment.Center
-        ) {
-            CircularProgressIndicator(color = Color.White)
-        }
-    }
+//    if (isLoading) {
+//        Box(
+//            modifier = Modifier
+//                .fillMaxSize()
+//                .background(color = Color.Black.copy(0.5f))
+//                .zIndex(2f)
+//                .clickable(enabled = false) {}, contentAlignment = Alignment.Center
+//        ) {
+//            CircularProgressIndicator(color = Color.White)
+//        }
+//    }
 
     Box(
         modifier = Modifier

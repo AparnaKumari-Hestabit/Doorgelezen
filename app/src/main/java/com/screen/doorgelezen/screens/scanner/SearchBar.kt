@@ -6,6 +6,7 @@ import androidx.compose.animation.core.EaseInOutQuad
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
@@ -47,8 +48,9 @@ fun SearchBar(
 
     val isKeyboardVisible = isSoftwareKeyboardVisible()
 
-    if (isKeyboardVisible) {
+    if (isKeyboardVisible && isLoading) {
 //        viewModel.clearCatalog()
+//        focusManager.clearFocus()
     }
 
     AnimatedVisibility(
@@ -65,11 +67,9 @@ fun SearchBar(
         SearchField(
             query = query,
             onSearch = { newQuery ->
-                viewModel.setQuery(newQuery)
-                viewModel.clearCatalog()
-//                printDebug("query: $newQuery")
-//                if (newQuery.isNotBlank()) {
-//                    search(newQuery)
+//                if(!isLoading) {
+                    viewModel.setQuery(newQuery)
+                    viewModel.clearCatalog()
 //                }
             },
             modifier = Modifier

@@ -3,7 +3,12 @@ package com.screen.doorgelezen
 import android.app.Activity
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -30,7 +35,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.zIndex
 import com.screen.doorgelezen.screens.scanner.ScanDataReceiver
 import com.screen.doorgelezen.utils.printDebug
 import com.screen.doorgelezen.utils.raiseToast
@@ -48,6 +56,13 @@ fun AppNavigator() {
     val mainViewModel: MainViewModel = hiltViewModel()
 
     val catalogViewModel: CatalogViewModel = hiltViewModel()
+    val isSearching by catalogViewModel.isSearching.collectAsState()
+
+
+    if(isSearching){
+        catalogViewModel.clearCatalog()
+
+    }
 
     NavHost(
         navController = navController,
@@ -119,7 +134,6 @@ fun ScannerNavigator(modifier: Modifier, catalogViewModel: CatalogViewModel, sna
                 catalogViewModel.updateSelectedCatalog(null)
             }
         }
-        catalogViewModel.clearCatalog()
     }
 
     val focusManager = LocalFocusManager.current

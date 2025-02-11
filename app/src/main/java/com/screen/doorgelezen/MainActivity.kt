@@ -29,6 +29,8 @@ class MainActivity : ComponentActivity() {
             Surface(
                color = MaterialTheme.colorScheme.surface
             ) {
+
+
                 DoorgelezenTheme {
                     AppNavigator()
                 }

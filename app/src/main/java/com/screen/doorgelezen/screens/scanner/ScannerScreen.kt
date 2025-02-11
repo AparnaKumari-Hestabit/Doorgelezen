@@ -65,18 +65,18 @@ fun ScannerScreen(
 
     val isLoading by authViewModel.isLoading.collectAsState()
 
-    if (isLoading || isCatalogLoading) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .zIndex(2f)
-                .background(Color.Black.copy(0.5f))
-                .clickable(enabled = false){},
-            contentAlignment = Alignment.Center
-        ) {
-            CircularProgressIndicator(color = Color.White)
-        }
-    }
+//    if (isLoading || isCatalogLoading) {
+//        Box(
+//            modifier = Modifier
+//                .fillMaxSize()
+//                .zIndex(2f)
+//                .background(Color.Black.copy(0.5f))
+//                .clickable(enabled = false){},
+//            contentAlignment = Alignment.Center
+//        ) {
+//            CircularProgressIndicator(color = Color.White)
+//        }
+//    }
 
     Column(
         modifier = Modifier
